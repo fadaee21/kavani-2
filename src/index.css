@@ -1,0 +1,14 @@
+@import url("react-toastify/dist/ReactToastify.css");
+@import url("./assets/font.css");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* @layer utilities {
+    .rtl {
+        direction: rtl;
+    }
+} */
+
+.ltr {
+  direction: ltr;
+}
