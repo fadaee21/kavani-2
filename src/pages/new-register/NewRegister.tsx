@@ -6,14 +6,11 @@ import axiosPrivate from "@/services/axios";
 import ReturnButton from "@/components/ui-kit/buttons/ReturnButton";
 import { toast } from "react-toastify";
 import router from "@/routes";
-import { useLocation } from "react-router-dom";
 import axios from "axios";
 
 const NewRegister = () => {
-  const location = useLocation();
   const origin = typeof window !== "undefined" && window.location.origin;
   const callBackUrl = `${origin}/success-payment`;
-  console.log(location);
 
   const [personPayment, setPersonPayment] = useState({
     name: "",
