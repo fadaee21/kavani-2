@@ -58,7 +58,7 @@ const useLogin = ({ password: pwd, username: user }: TLoginInfo) => {
       console.log(response.status);
 
       setErrRes([]);
-    } catch (error: unknown) {
+    } catch (error) {
       if (axios.isAxiosError(error)) {
         const { code, message } = error.response?.data.body || {};
         if (code === "3000") {

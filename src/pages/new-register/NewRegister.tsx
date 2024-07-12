@@ -7,6 +7,7 @@ import ReturnButton from "@/components/ui-kit/buttons/ReturnButton";
 import { toast } from "react-toastify";
 import router from "@/routes";
 import { useLocation } from "react-router-dom";
+import axios from "axios";
 
 const NewRegister = () => {
   const location = useLocation();
@@ -18,7 +19,7 @@ const NewRegister = () => {
     name: "",
     lastName: "",
     mobile: "",
-    amount: 700000,
+    amount: 10000,
     callBackUrl,
   });
 
@@ -42,13 +43,15 @@ const NewRegister = () => {
         toast.error("مشکلی پیش آمد، دوباره تلاش کنید");
       }
       // console.log(res.data);
-    } catch (error: any) {
-      console.log(error.response.body);
-      if (error.response.data.body.code === "10") {
-        toast.error("کاربری با این مشخصات وجود دارد");
-        return;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const { code } = error.response?.data.body || {};
+        if (code === "10") {
+          toast.error("کاربری با این مشخصات وجود دارد");
+          return;
+        }
+        toast.error("مشکلی پیش آمد، دوباره تلاش کنید");
       }
-      toast.error("مشکلی پیش آمد، دوباره تلاش کنید");
     }
   };
   const disableButton = Object.values(personPayment).some(
