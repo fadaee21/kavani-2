@@ -34,35 +34,8 @@ const Dropdown = memo(({ auth }: Auth) => {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute w-56 mt-2 origin-top-right divide-y-2 divide-gray-200/50 dark:divide-gray-800/20 px-2 rounded-md shadow-lg left-5 ring-1 ring-black/5 focus:outline-none bg-slate-50 dark:bg-slate-700">
-          <div className="px-1 py-1">
-            <Menu.Item>
-              {({ active }) => (
-                <button
-                  className={`${active
-                      ? "bg-gray-300 text-slate-900 dark:text-slate-50 dark:bg-slate-800/30"
-                      : "text-gray-900 dark:text-slate-300"
-                    } group flex w-full items-center rounded-md px-2 py-2 text-sm hover:text-slate-900 hover:dark:text-slate-50`}
-                >
-                  مشاهده پروفایل
-                </button>
-              )}
-            </Menu.Item>
-            {/* i didn't remove this part to have an example to see if i want to add any item to my menu */}
-            {/* <Menu.Item>
-              {({ active }) => (
-                <button
-                  className={`${
-                    active
-                      ? "bg-gray-300 text-slate-900 dark:text-slate-50 dark:bg-slate-800/30"
-                      : "text-gray-900 dark:text-slate-300"
-                  } group flex w-full items-center rounded-md px-2 py-2 text-sm hover:text-slate-900 hover:dark:text-slate-50`}
-                >
-                  Duplicate
-                </button>
-              )}
-            </Menu.Item> */}
-          </div>
+        <Menu.Items className="absolute w-56 mt-2 origin-top-right  dark:divide-gray-800/20 px-2 rounded-md shadow-lg left-5 ring-1 ring-black/5 focus:outline-none bg-slate-50 dark:bg-slate-700">
+    
           <div className="px-1 py-1">
             <Menu.Item>
               {({ active }) => (

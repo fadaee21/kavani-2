@@ -7,16 +7,21 @@ import ReturnButton from "@/components/ui-kit/buttons/ReturnButton";
 import { toast } from "react-toastify";
 import router from "@/routes";
 import axios from "axios";
+import ListBoxSelect from "@/components/ui-kit/select-box/ListBoxSelect";
+import { ACTIVITIES_FIELD } from "@/const/registerNewUser";
+import { personPaymentSchema } from "@/validator/personPaymentSchema";
+import alertErr from "@/validator/showError";
 
 const NewRegister = () => {
   const origin = typeof window !== "undefined" && window.location.origin;
   const callBackUrl = `${origin}/success-payment`;
 
+  const [selected, setSelected] = useState<SelectedOption | null>(null);
   const [personPayment, setPersonPayment] = useState({
     name: "",
     lastName: "",
     mobile: "",
-    amount: 10000,
+    amount: "",
     callBackUrl,
   });
 
@@ -29,8 +34,11 @@ const NewRegister = () => {
 
   const registerNewPerson = async () => {
     try {
+      const validatedData = personPaymentSchema.parse(personPayment);
       const res = await axiosPrivate.post("/panel/accounts/add", {
-        ...personPayment,
+        ...validatedData,
+        aa: selected?.value,
+        // TODO:change aa KEY
       });
       if (res.status === 200) {
         mutate(`/panel/banner/get/all/0/100`);
@@ -41,6 +49,9 @@ const NewRegister = () => {
       }
       // console.log(res.data);
     } catch (error) {
+      const err = alertErr(error);
+      console.log({ err });
+      toast.error(err?.[0]);
       if (axios.isAxiosError(error)) {
         const { code } = error.response?.data.body || {};
         if (code === "10") {
@@ -51,9 +62,8 @@ const NewRegister = () => {
       }
     }
   };
-  const disableButton = Object.values(personPayment).some(
-    (value) => value === ""
-  );
+  const disableButton =
+    Object.values(personPayment).some((value) => value === "") || !selected;
   return (
     <div className="max-w-xl mx-auto p-4 my-3 bg-white border border-gray-300 rounded-lg shadow-sm md:p-6 dark:border-gray-700 dark:bg-gray-800">
       <div className="flex justify-between items-center mb-4">
@@ -77,6 +87,15 @@ const NewRegister = () => {
             state={personPayment.lastName}
           />
         </div>
+        <div className="w-full mb-5">
+          <TextField
+            id="amount"
+            placeholder="مبلغ"
+            label="مبلغ"
+            onChange={handleChange}
+            state={personPayment.amount}
+          />
+        </div>
         <TextField
           id="mobile"
           placeholder="شماره تماس"
@@ -84,7 +103,14 @@ const NewRegister = () => {
           onChange={handleChange}
           state={personPayment.mobile}
         />
-
+        <ListBoxSelect
+          items={ACTIVITIES_FIELD}
+          selected={selected}
+          setSelected={setSelected}
+          label="نوع فعالیت"
+          placeholder="انتخاب نوع فعالیت"
+          className="w-full my-5"
+        />
         <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0 sm:space-x-4 w-full">
           <PrimaryButtons
             onClick={registerNewPerson}

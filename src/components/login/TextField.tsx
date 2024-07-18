@@ -29,7 +29,7 @@ export const TextField = forwardRef<HTMLInputElement, IProps>(
     ref
   ) => {
     const labelClasses = clsx(
-      "block w-full mb-1 text-md font-medium leading-6 text-gray-900 dark:text-slate-300 whitespace-nowrap",
+      "block w-full mb-1 text-sm font-medium leading-6 text-gray-900 dark:text-slate-300 whitespace-nowrap",
       labelClass
     );
     const inputClasses = clsx(
@@ -42,7 +42,7 @@ export const TextField = forwardRef<HTMLInputElement, IProps>(
         <label htmlFor={id} className={labelClasses}>
           {label}
         </label>
-        <div className={`relative w-full ${className}`}> {/* Append the className prop here */}
+        <div className={`relative w-full ${className}`}>
           <input
             className={inputClasses}
             value={state}
