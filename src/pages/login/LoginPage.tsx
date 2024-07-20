@@ -1,21 +1,39 @@
-import { TextField } from "@/components/login/TextField";
+import { TextFieldLogin } from "@/components/login/TextFieldLogin";
 import CheckboxOne from "@/components/ui-kit/CheckBox";
 import { LoadingSpinnerButton } from "@/components/ui-kit/LoadingSpinner";
 // import MySwitch from "@/components/ui-kit/MySwitch";
-import { PrimaryButtons } from "@/components/ui-kit/buttons/PrimaryButtons";
+import { PrimaryButtonsLogin } from "@/components/ui-kit/buttons/PrimaryButtonsLogin";
 import { useAuth } from "@/hooks/context/useAuth";
 import useLogin from "@/hooks/useLogin";
 import { useEffect, useRef, useState } from "react";
+
+// Import the background image
+import backgroundImage from "@/assets/images/flat-wall-concrete-with-black-hole-middle.png";
+import kavaniLogo from "@/assets/images/kavani.png";
+import ListBoxSelectLogin from "@/components/ui-kit/select-box/ListBoxSelectLogin";
+import { LOGIN_ROLE } from "@/const/loginRole";
+
 export default function LoginPage() {
+  const { setAuth } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [loginInfo, setLoginInfo] = useState({
     username: import.meta.env.VITE_APP_USERNAME || "",
     password: import.meta.env.VITE_APP_PASSWORD || "",
   });
+  const [selected, setSelected] = useState<SelectedOption | null>(null);
   const { persist, setPersist } = useAuth();
   const userRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => userRef.current?.focus(), []);
+
+  useEffect(() => {
+    setAuth((i: any) => {
+      return {
+        ...i,
+        roles: selected?.value,
+      };
+    });
+  }, [selected]);
 
   const { errRes, handleSubmit, loading } = useLogin(loginInfo);
 
@@ -33,7 +51,7 @@ export default function LoginPage() {
       viewBox="0 0 24 24"
       strokeWidth="1.5"
       stroke="currentColor"
-      className="w-4 h-4"
+      className="w-6 h-6"
     >
       <path
         strokeLinecap="round"
@@ -55,7 +73,7 @@ export default function LoginPage() {
       viewBox="0 0 24 24"
       strokeWidth="1.5"
       stroke="currentColor"
-      className="w-4 h-4"
+      className="w-6 h-6"
     >
       <path
         strokeLinecap="round"
@@ -64,77 +82,89 @@ export default function LoginPage() {
       />
     </svg>
   );
+
   return (
-    <>
-      <div className="flex items-center justify-center min-h-screen bg-gray-200 dark:bg-gray-900">
-        <div className="w-9/12 max-w-xl p-6 mx-auto bg-white rounded-md shadow-md md:p-8 dark:bg-gray-800">
-          <div className="w-full max-w-sm mx-auto">
-            <img
-              className="w-auto h-12 mx-auto"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-              alt="Your Company"
-            />
-            <h2 className="mt-10 text-xl font-bold leading-9 tracking-tight text-center text-gray-900 sm:text-2xl xl:text-3xl dark:text-slate-300">
-              ورود به حساب کاربری
-            </h2>
-          </div>
+    <div
+      className="flex items-center justify-center min-h-screen bg-cover bg-center bg-[#27282B] relative"
+      style={{ backgroundImage: `url(${backgroundImage})` }}
+    >
+      <div className="absolute top-1/2 left-0 transform translate-x-1/2 -translate-y-1/2 ">
+        <img src={kavaniLogo} alt="kavani logo" />
+      </div>
+      {/* <div
+        className="absolute top-0 right-0 "
+        style={{ backgroundImage: `url(${kavaniLogo})` }}
+        aria-hidden="true"
+      ></div> */}
+      <div className="w-1/2 flex items-end justify-center flex-col p-6 ml-auto rounded-md md:p-8">
+        <div className="w-full max-w-sm mx-auto">
+          {/* <img
+            className="w-auto h-12 mx-auto"
+            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+            alt="Your Company"
+          /> */}
+          <h2 className="mt-10 text-xl font-bold leading-9 tracking-tight text-center text-gray-50 sm:text-2xl xl:text-3xl">
+            ورود به حساب کاربری
+          </h2>
+        </div>
 
-          <div className="w-full max-w-sm mx-auto mt-8 sm:mt-12 md:mt-16">
-            <form className="space-y-10" onSubmit={handleSubmit}>
-              <div className="space-y-1">
-                <TextField
-                  required
-                  autoComplete="off"
-                  ref={userRef}
-                  id="username"
-                  onChange={handleChange}
-                  state={loginInfo.username}
-                  label="نام کاربری"
-                />
-                <TextField
-                  required
-                  autoComplete="off"
-                  type={showPassword ? "text" : "password"}
-                  id="password"
-                  onChange={handleChange}
-                  state={loginInfo.password}
-                  label="رمز ورود"
-                  icon={showPassword ? eyeSlash : eye}
-                  onClick={() => setShowPassword(!showPassword)}
-                />
-              </div>
-
-              <PrimaryButtons type="submit" disabled={loading} fullWidth>
-                {loading ? <LoadingSpinnerButton /> : "ورود"}
-              </PrimaryButtons>
-              <CheckboxOne
-                isChecked={persist}
-                onChange={() => setPersist(!persist)}
-                label="مرا به خاطر بسپار"
+        <div className="w-full max-w-sm mx-auto">
+          <form className="space-y-8" onSubmit={handleSubmit}>
+            <div className="space-y-8">
+              <TextFieldLogin
+                required
+                autoComplete="off"
+                ref={userRef}
+                id="username"
+                onChange={handleChange}
+                state={loginInfo.username}
+                placeholder="نام کاربری"
+                label=""
               />
-            </form>
-            {/* <div className="w-full mt-4 text-left ">
-              <span className="inline-flex items-center justify-center w-10 px-2 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-md dark:text-slate-300 dark:bg-gray-700 ring-1 ring-inset ring-gray-500/10">
-                11/{phoneCounter}
-              </span>
-            </div> */}
-            {errRes && errRes.length > 0 ? (
-              <ul className="p-2 mt-4 text-xs font-medium list-disc list-inside rounded-lg shadow-sm max-h-16 bg-rose-50 dark:bg-rose-950">
-                {errRes.map((error, index) => (
-                  <li className="text-rose-950 dark:text-rose-50" key={index}>
-                    {error}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <div className="w-full h-10 mt-1" />
-            )}
-          </div>
-          {/* <div className="w-full max-w-sm mx-auto mt-8">
-            <MySwitch />
-          </div> */}
+              <TextFieldLogin
+                required
+                autoComplete="off"
+                type={showPassword ? "text" : "password"}
+                id="password"
+                onChange={handleChange}
+                state={loginInfo.password}
+                label=""
+                placeholder="رمز ورود"
+                icon={showPassword ? eyeSlash : eye}
+                onClick={() => setShowPassword(!showPassword)}
+              />
+              <ListBoxSelectLogin
+                items={LOGIN_ROLE}
+                selected={selected}
+                setSelected={setSelected}
+                label=""
+                placeholder="نوع کاربری"
+                className="w-full my-5"
+              />
+            </div>
+
+            <PrimaryButtonsLogin type="submit" disabled={loading} fullWidth>
+              {loading ? <LoadingSpinnerButton /> : "ورود"}
+            </PrimaryButtonsLogin>
+            <CheckboxOne
+              isChecked={persist}
+              onChange={() => setPersist(!persist)}
+              label="مرا به خاطر بسپار"
+            />
+          </form>
+          {errRes && errRes.length > 0 ? (
+            <ul className="p-2 mt-4 text-xs font-medium list-disc list-inside rounded-lg shadow-sm max-h-16 bg-rose-50 dark:bg-rose-950">
+              {errRes.map((error, index) => (
+                <li className="text-rose-950 dark:text-rose-50" key={index}>
+                  {error}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="w-full h-10 mt-1" />
+          )}
         </div>
       </div>
-    </>
+    </div>
   );
 }

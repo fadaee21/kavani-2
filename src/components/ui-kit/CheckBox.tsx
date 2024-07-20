@@ -8,7 +8,7 @@ const CheckboxOne = ({ isChecked, label, ...rest }: IProps) => {
     <div>
       <label
         htmlFor="checkboxLabelOne"
-        className="flex items-center text-xs text-gray-900 cursor-pointer select-none sm:text-sm dark:text-slate-300"
+        className="flex items-center text-xs text-gray-50 cursor-pointer select-none sm:text-sm dark:text-slate-300"
       >
         <div className="relative">
           <input
@@ -23,7 +23,7 @@ const CheckboxOne = ({ isChecked, label, ...rest }: IProps) => {
             <span
               className={`h-4 w-4 rounded-md ${
                 isChecked
-                  ? "bg-gray-500 dark:bg-indigo-700 "
+                  ? "bg-[#FD4718] dark:bg-[#FD4718] "
                   : "bg-white dark:bg-gray-300"
               }`}
             ></span>

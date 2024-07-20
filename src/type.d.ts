@@ -1,4 +1,4 @@
-type Role = "SUPERUSER" | "ADMIN" | "USER";
+type Role = "serviceProvider" | "supplierGoods" | "kavaniUser";
 
 interface SelectedOption {
   value: string;

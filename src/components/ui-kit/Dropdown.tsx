@@ -19,7 +19,7 @@ const Dropdown = memo(({ auth }: Auth) => {
   };
   return (
     <Menu as="div" className="relative z-10 inline-block text-left">
-      <div className="text-style">
+      <div className="text-style text-gray-300">
         <Menu.Button className="inline-flex items-center justify-center w-full px-4 py-2 font-semibold rounded-md text-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 ">
           {auth?.user}
           <ChevronDownIcon className="w-5 h-5 mr-2 -ml-1" aria-hidden="true" />

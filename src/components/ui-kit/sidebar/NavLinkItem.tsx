@@ -21,10 +21,8 @@ const NavLinkItem = ({ item, setOpen }: NavLinkItemProps) => {
       onClick={() => setOpen(false)}
       to={item.href}
       className={({ isActive }) =>
-        `flex p-2 my-1 text-sm font-semibold leading-6 rounded-md gap-x-3 hover:text-slate-900 hover:dark:text-slate-50 ${
-          isActive
-            ? "bg-gray-300 text-slate-900 dark:text-slate-50 dark:bg-slate-800/30"
-            : ""
+        `flex p-2 my-1 text-sm font-semibold leading-6 rounded-md gap-x-3 hover:text-[#FD4718] ${
+          isActive ? "bg-gray-400 text-[#FD4718]" : "text-gray-300"
         }`
       }
       end
