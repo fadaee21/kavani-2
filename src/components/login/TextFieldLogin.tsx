@@ -33,7 +33,7 @@ export const TextFieldLogin = forwardRef<HTMLInputElement, IProps>(
       labelClass
     );
     const inputClasses = clsx(
-      "w-full h-14 rounded-2xl border-0 py-1.5 block shadow-sm ring-inset placeholder:text-gray-400 text-lg leading-6 pl-10 bg-[#FFFFFF1A] text-gray-400 ring-gray-300 ring-gray-600 focus:ring-0 focus:ring-inset  focus:ring- focus:ring-indigo-500",
+      "w-full h-14 rounded-2xl border-0 py-1.5 block shadow-sm ring-inset placeholder-gray-400 text-gray-50 text-lg leading-6 pl-10 bg-[#FFFFFF1A]  ring-gray-300 ring-gray-600 focus:ring-0 focus:ring-inset  focus:ring- focus:ring-indigo-500",
       inputClass
     );
 

@@ -8,23 +8,23 @@ const navList = [
   {
     id: "1a",
     name: "داشبورد",
-    href: "/superuser",
+    href: "/SUPERUSER",
     index: true,
     icon: Dashboard,
     role: "SUPERUSER",
   },
   {
     id: "2a",
-    name: "کاربران",
-    href: "/superuser/registered-account",
+    name: "لیست ثبت نام ها",
+    href: "/SUPERUSER/registered-account",
     icon: Team,
     role: "SUPERUSER",
   },
  
   {
     id: "3a",
-    name: "ثبت جدید",
-    href: "/superuser/new-register",
+    name: "ثبت نام",
+    href: "/SUPERUSER/new-register",
     icon: Team,
     role: "SUPERUSER",
   },
@@ -34,7 +34,7 @@ const navList = [
   // {
   //   id: "3a",
   //   name: "پروژه‌ها",
-  //   href: "/superuser/projects",
+  //   href: "/SUPERUSER/projects",
   //   icon: Projects,
   //   role: "SUPERUSER",
   // },

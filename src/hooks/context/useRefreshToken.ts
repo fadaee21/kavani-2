@@ -17,7 +17,7 @@ const useRefreshToken = () => {
     const userInfo = jwtDecode<MyJwtPayload>(accessToken);
 
     setAuth({
-      user: "superuser", //TODO: it must come from backend
+      user: "SUPERUSER", //TODO: it must come from backend
       pwd: "",
       roles: getRole(userInfo.roles),
       accessToken,

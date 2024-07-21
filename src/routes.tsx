@@ -22,7 +22,7 @@ const router = createBrowserRouter([
         element: <RootLayout />,
         children: [
           {
-            path: "superuser",
+            path: "SUPERUSER",
             element: <RequireAuth allowedRoles={["SUPERUSER"]} />,
             children: [
               {
