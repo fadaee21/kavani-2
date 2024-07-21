@@ -70,7 +70,7 @@ function Sidebar({ children }: TChildren) {
         sidebarContent={sidebarContent}
       />
       <div className="w-full min-h-screen mr-0 md:mr-72 bg-[#27282B]">
-        <header className="flex items-center justify-end w-full h-16 pr-5 text-gray-50 border-b-2 border-gray-50">
+        <header className="flex items-center justify-end w-full h-16 pr-5 text-gray-50 ">
           <Bars3
             className="w-5 h-5 ml-auto cursor-pointer md:hidden"
             onClick={() => setOpen(!open)}
@@ -79,13 +79,13 @@ function Sidebar({ children }: TChildren) {
             className="w-5 h-5 cursor-pointer"
             onClick={() => console.log("bell")}
           />
-          <div className="flex items-center pr-4 mr-4 border-r-2 border-gray-50">
+          <div className="flex items-center pr-4 mr-4 border-r-2 ">
             <Avatar />
             <Dropdown auth={auth} />
           </div>
         </header>
         <div
-          className="min-w-full bg-gray-200"
+          className="min-w-full bg-zinc-700"
           style={{ minHeight: "calc(100vh - 4rem)" }}
         >
           <main className="container py-10 mx-auto">

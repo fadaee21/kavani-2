@@ -4,7 +4,7 @@
 
 export const LOGIN_ROLE: SelectedOption[] = [
   {
-    value: "kavaniUser",
+    value: "SUPERUSER",
     label: "کاربر کاوانی",
   },
   {

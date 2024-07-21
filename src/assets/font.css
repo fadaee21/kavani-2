@@ -8,3 +8,7 @@
     url(./fonts/Vazir.ttf) format("truetype");
   /* Safari, Android, iOS */
 }
+@font-face {
+  font-family: "Cinema";
+  src: url(./fonts/Cinema.ttf) format("truetype");
+}

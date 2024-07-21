@@ -19,7 +19,7 @@ const useLogin = ({ password: pwd, username: user }: TLoginInfo) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || `/superuser`;
+  const from = location.state?.from?.pathname || `/SUPERUSER`;
   const { setAuth } = useAuth();
   useEffect(() => {
     setErrRes([]);

@@ -103,7 +103,7 @@ export default function LoginPage() {
             src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
             alt="Your Company"
           /> */}
-          <h2 className="mt-10 text-xl font-bold leading-9 tracking-tight text-center text-gray-50 sm:text-2xl xl:text-3xl">
+          <h2 className="mt-10 font-[Cinema] text-2xl font-bold leading-9 tracking-tight text-center text-gray-50 sm:text-2xl xl:text-3xl">
             ورود به حساب کاربری
           </h2>
         </div>
