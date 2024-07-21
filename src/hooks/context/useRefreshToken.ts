@@ -3,7 +3,7 @@ import { useAuth } from "./useAuth";
 import Cookies from "js-cookie";
 import { axiosInstance } from "@/services/axios";
 import {jwtDecode} from "jwt-decode";
-import { getRole } from "@/helper/getRole";
+// import { getRole } from "@/helper/getRole";
 
 const useRefreshToken = () => {
   const { setAuth } = useAuth();
@@ -15,11 +15,11 @@ const useRefreshToken = () => {
     const response = await axiosInstance.post("/auths/refresh", { refresh_token: refreshToken });
     const { access_token: accessToken } = response.data.body;
     const userInfo = jwtDecode<MyJwtPayload>(accessToken);
-
+console.log({userInfo})
     setAuth({
-      user: "SUPERUSER", //TODO: it must come from backend
+      user: userInfo.username,
       pwd: "",
-      roles: getRole(userInfo.roles),
+      roles: userInfo.roles[0],
       accessToken,
     });
 

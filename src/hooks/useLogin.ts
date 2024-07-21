@@ -6,33 +6,35 @@ import { loginInfoSchema } from "@/validator/loginInfoSchema";
 import Cookies from "js-cookie";
 
 import { jwtDecode } from "jwt-decode";
-import { getRole } from "@/helper/getRole";
+// import { getRole } from "@/helper/getRole";
 import { axiosInstance } from "@/services/axios";
 import axios from "axios";
 
 type TLoginInfo = {
   username: string;
   password: string;
+  role?: string; //FIXME: change this to correct role type
 };
-const useLogin = ({ password: pwd, username: user }: TLoginInfo) => {
+const useLogin = ({ password: pwd, username: user, role }: TLoginInfo) => {
   const [errRes, setErrRes] = useState<string[]>();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || `/SUPERUSER`;
+  const from = location.state?.from?.pathname || `/kavani_user`;
   const { setAuth } = useAuth();
   useEffect(() => {
     setErrRes([]);
   }, [pwd, user]);
-
+  console.log({ role });
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
     try {
-      loginInfoSchema.safeParse({ pwd, user });
+      loginInfoSchema.safeParse({ pwd, user, role });
       const response = await axiosInstance.post("/panel/login", {
         password: pwd,
         username: user,
+        role,
       });
       // console.log(response);
       if (response.status === 200) {
@@ -46,12 +48,13 @@ const useLogin = ({ password: pwd, username: user }: TLoginInfo) => {
           sameSite: "strict",
         });
         console.log({ userInfo });
-        const roles = getRole(userInfo.roles);
+        // const roles = getRole(userInfo.roles);
         setAuth({
+          user: userInfo.username,
+          roles: userInfo.roles[0],
           accessToken,
-          roles,
-          user, //TODO: it must comes from backend not from login
-          pwd,
+
+          pwd: "",
         });
         navigate(from, { replace: true });
       }

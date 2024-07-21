@@ -1,8 +1,8 @@
 export const getRole = (roles: Role[] | undefined): Role => {
-  if (!roles) return "SUPERUSER";
+  if (!roles) return "kavani_user";
   const roleSet = new Set(roles);
-  if (roleSet.has("SUPERUSER")) return "SUPERUSER";
+  if (roleSet.has("kavani_user")) return "kavani_user";
   if (roleSet.has("serviceProvider")) return "serviceProvider";
   if (roleSet.has("supplierGoods")) return "supplierGoods";
-  return "SUPERUSER";
+  return "kavani_user";
 };

@@ -1,4 +1,4 @@
-type Role = "serviceProvider" | "supplierGoods" | "SUPERUSER";
+type Role = "GOOD_SUPPLIER" | "KOL" | "KAVANI";
 
 interface SelectedOption {
   value: string;
@@ -28,7 +28,7 @@ interface IAuth {
   accessToken: string;
 }
 type TAllowRoles = {
-  allowedRoles: string[];
+  allowedRoles: Role[];
 };
 
 /*=========================================
@@ -94,7 +94,7 @@ type User = {
   national_code: null | string;
   status: string;
   last_login_at: string;
-  voucher:string;
+  voucher: string;
 };
 
 type Transaction = {
@@ -144,9 +144,19 @@ interface IBannerImg extends IBanner {
               packages
 
 =========================================*/
+// interface MyJwtPayload extends JwtPayload {
+//   id: string | null;
+//   email: string | null;
+//   mobile: string | null;
+//   roles: Role[];
+// }
 interface MyJwtPayload extends JwtPayload {
-  id: string | null;
-  email: string | null;
-  mobile: string | null;
+  id: number;
+  email: string;
+  mobile?: string;
+  nationalCode?: string;
+  birthDate?: string;
   roles: Role[];
+  username: string;
+  token_expiration_date: number;
 }

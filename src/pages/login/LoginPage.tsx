@@ -35,7 +35,7 @@ export default function LoginPage() {
     });
   }, [selected]);
 
-  const { errRes, handleSubmit, loading } = useLogin(loginInfo);
+  const { errRes, handleSubmit, loading } = useLogin({...loginInfo,role:selected?.value});
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLoginInfo({

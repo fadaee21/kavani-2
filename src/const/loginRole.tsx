@@ -4,15 +4,15 @@
 
 export const LOGIN_ROLE: SelectedOption[] = [
   {
-    value: "SUPERUSER",
+    value: "KAVANI",
     label: "کاربر کاوانی",
   },
   {
-    value: "supplierGoods",
+    value: "GOOD_SUPPLIER",
     label: "تامین کننده کالا",
   },
   {
-    value: "serviceProvider",
+    value: "KOL",
     label: "تامین کننده خدمات",
   },
 ];
