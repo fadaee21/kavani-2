@@ -20,7 +20,11 @@ const useLogin = ({ password: pwd, username: user, role }: TLoginInfo) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || `/kavani_user`;
+  const from =
+    location.state?.from?.pathname || role === "KAVANI" || role === "KOL"
+      ? "/kvn/registered-account"
+      : "/kvn";
+
   const { setAuth } = useAuth();
   useEffect(() => {
     setErrRes([]);

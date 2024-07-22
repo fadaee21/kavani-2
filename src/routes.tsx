@@ -22,29 +22,40 @@ const router = createBrowserRouter([
         element: <RootLayout />,
         children: [
           {
-            path: "kavani_user",
-            element: <RequireAuth allowedRoles={["KAVANI","KOL","GOOD_SUPPLIER"]} />,
+            path: "kvn",
+            element: <RequireAuth allowedRoles={["GOOD_SUPPLIER"]} />,
             children: [
               {
                 index: true,
                 element: <DashboardPage />,
               },
+            ],
+          },
+          {
+            path: "kvn",
+            element: <RequireAuth allowedRoles={["KOL", "KAVANI"]} />,
+            children: [
               {
                 path: "registered-account",
-
-                children: [
-                  {
-                    index: true,
-                    element: <RegisteredAccount />,
-                  },
-                ],
+                element: <RegisteredAccount />,
               },
+            ],
+          },
+          {
+            path: "kvn",
+            element: <RequireAuth allowedRoles={["KAVANI"]} />,
+            children: [
               {
                 path: "new-register",
                 element: <NewRegister />,
               },
+              {
+                path: "registered-account",
+                element: <RegisteredAccount />,
+              },
             ],
           },
+
           // {
           //   path: "KAVANI",
           //   element: <RequireAuth allowedRoles={["KAVANI","KOL","GOOD_SUPPLIER"]} />,
@@ -57,7 +68,7 @@ const router = createBrowserRouter([
           // },
           {
             path: "settings",
-            element: <RequireAuth allowedRoles={[ "KAVANI"]} />, //add all allowed roles
+            element: <RequireAuth allowedRoles={["KAVANI", "KOL", "GOOD_SUPPLIER"]} />, //add all allowed roles
             children: [
               {
                 index: true,

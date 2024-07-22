@@ -43,7 +43,7 @@ const NewRegister = () => {
       if (res.status === 200) {
         mutate(`/panel/banner/get/all/0/100`);
         toast.success("ثبت با موفقیت انجام شد");
-        router.navigate("/kavani_user/registered-account");
+        router.navigate("/kvn/registered-account");
       } else {
         toast.error("مشکلی پیش آمد، دوباره تلاش کنید");
       }

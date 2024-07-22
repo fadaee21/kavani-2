@@ -1,3 +1,16 @@
+
+
+usernames: [kvn, good_supplier_user, kol_user]
+role: [KAVANI, GOOD_SUPPLIER, KOL]
+
+
+access:
+KAVANI: ثبت نام - لیست ثبت نام ها
+KOL:داشبورد 
+GOOD_SUPPLIER : ?
+
+
+
 ## Background Colors
 
 - **body:** `bg-slate-50 dark:bg-slate-900`
