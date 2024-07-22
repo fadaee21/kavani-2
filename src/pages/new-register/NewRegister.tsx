@@ -11,17 +11,19 @@ import { TextFieldLogin } from "@/components/login/TextFieldLogin";
 import ListBoxSelectLogin from "@/components/ui-kit/select-box/ListBoxSelectLogin";
 import { PrimaryButtonsLogin } from "@/components/ui-kit/buttons/PrimaryButtonsLogin";
 import ReturnButtonLogin from "@/components/ui-kit/buttons/ReturnButtonLogin";
+import { LoadingSpinnerButton } from "@/components/ui-kit/LoadingSpinner";
 
 const NewRegister = () => {
   const origin = typeof window !== "undefined" && window.location.origin;
   const callBackUrl = `${origin}/success-payment`;
-
   const [selected, setSelected] = useState<SelectedOption | null>(null);
+  const [loading, setLoading] = useState(false);
   const [personPayment, setPersonPayment] = useState({
     name: "",
     lastName: "",
     mobile: "",
     amount: "",
+    companyName: "",
     callBackUrl,
   });
 
@@ -34,15 +36,15 @@ const NewRegister = () => {
 
   const registerNewPerson = async () => {
     try {
+      setLoading(true);
       const validatedData = personPaymentSchema.parse(personPayment);
       const res = await axiosPrivate.post("/panel/accounts/add", {
         ...validatedData,
-        aa: selected?.value,
-        // TODO:change aa KEY
+        accountActivityType: selected?.value,
       });
       if (res.status === 200) {
         mutate(`/panel/banner/get/all/0/100`);
-        toast.success("ثبت با موفقیت انجام شد");
+        toast.success("پیامک به زودی برای کاربر ارسال میشود");
         router.navigate("/kvn/registered-account");
       } else {
         toast.error("مشکلی پیش آمد، دوباره تلاش کنید");
@@ -60,6 +62,8 @@ const NewRegister = () => {
         }
         toast.error("مشکلی پیش آمد، دوباره تلاش کنید");
       }
+    } finally {
+      setLoading(false);
     }
   };
   const disableButton =
@@ -96,9 +100,18 @@ const NewRegister = () => {
             state={personPayment.amount}
           />
         </div>
+        <div className="w-full mb-5">
+          <TextFieldLogin
+            id="companyName"
+            placeholder="نام شرکت"
+            label=""
+            onChange={handleChange}
+            state={personPayment.companyName}
+          />
+        </div>
         <TextFieldLogin
           id="mobile"
-          placeholder="شماره تماس"
+          placeholder="موبایل"
           label=""
           onChange={handleChange}
           state={personPayment.mobile}
@@ -116,9 +129,9 @@ const NewRegister = () => {
             onClick={registerNewPerson}
             fullWidth
             className="my-10"
-            disabled={disableButton}
+            disabled={disableButton || loading}
           >
-            ثبت
+            {loading ? <LoadingSpinnerButton /> : "ثبت نام"}
           </PrimaryButtonsLogin>
         </div>
       </div>
