@@ -2,7 +2,7 @@ import navList from "@/navList";
 import { useAuth } from "@/hooks/context/useAuth";
 import Dropdown from "../Dropdown";
 import Avatar from "../Avatar";
-import Settings from "@/assets/icons/settings.svg?react";
+// import Settings from "@/assets/icons/settings.svg?react";
 import Bell from "@/assets/icons/bell.svg?react";
 import Bars3 from "@/assets/icons/bars-3.svg?react";
 import SlideOver from "./SlideOver";
@@ -47,7 +47,7 @@ function Sidebar({ children }: TChildren) {
                 ))}
             </ul>
           </li>
-          <li className="mt-auto">
+          {/* <li className="mt-auto">
             <NavLinkItem
               item={{
                 name: "تنظیمات",
@@ -56,7 +56,7 @@ function Sidebar({ children }: TChildren) {
               }}
               setOpen={setOpen}
             />
-          </li>
+          </li> */}
         </ul>
       </nav>
     </aside>
