@@ -1,7 +1,3 @@
-// تامین کننده خدمات
-// تامین کننده کالا
-// کاربر کاوانی
-
 export const LOGIN_ROLE: SelectedOption[] = [
   {
     value: "KAVANI",

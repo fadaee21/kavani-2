@@ -1,7 +1,7 @@
 import TableContent from "@/components/registered-accounts/TableContent";
 // import TableContentAccounts from "@/components/registered-accounts/TableContentAccounts";
 
-const RegisteredAccount = () => {
+const KolLIst = () => {
   const fetchUrl = (page: number, pageSize: number) =>
     `/panel/accounts/get/registered/${page}/${pageSize}`;
   return (
@@ -11,12 +11,10 @@ const RegisteredAccount = () => {
   );
 };
 
-export default RegisteredAccount;
+export default KolLIst;
 
 const headers = [
-  { key: "first_name", label: "نام" },
-  { key: "last_name", label: "نام خانوادگی" },
-  { key: "mobile", label: "موبایل" },
-  { key: "voucher", label: "کد تخفیف" },
+  { key: "", label: "نام" },
+  { key: "", label: "نام رسمی" },
+  { key: "", label: "آدرس" },
 ];
-

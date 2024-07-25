@@ -1,7 +1,7 @@
 import navList from "@/navList";
 import { useAuth } from "@/hooks/context/useAuth";
-import Dropdown from "../Dropdown";
-import Avatar from "../Avatar";
+import Dropdown from "../ui-kit/Dropdown";
+import Avatar from "../ui-kit/Avatar";
 // import Settings from "@/assets/icons/settings.svg?react";
 import Bell from "@/assets/icons/bell.svg?react";
 import Bars3 from "@/assets/icons/bars-3.svg?react";

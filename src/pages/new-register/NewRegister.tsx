@@ -7,10 +7,10 @@ import axios from "axios";
 import { ACTIVITIES_FIELD } from "@/const/registerNewUser";
 import { personPaymentSchema } from "@/validator/personPaymentSchema";
 import alertErr from "@/validator/showError";
-import { TextFieldLogin } from "@/components/login/TextFieldLogin";
-import ListBoxSelectLogin from "@/components/ui-kit/select-box/ListBoxSelectLogin";
-import { PrimaryButtonsLogin } from "@/components/ui-kit/buttons/PrimaryButtonsLogin";
-import ReturnButtonLogin from "@/components/ui-kit/buttons/ReturnButtonLogin";
+import { TextField } from "@/components/ui-kit/TextField";
+import ListBoxSelect from "@/components/ui-kit/ListBoxSelect";
+import { PrimaryButtons } from "@/components/ui-kit/buttons/PrimaryButtons";
+import ReturnButton from "@/components/ui-kit/buttons/ReturnButton";
 import { LoadingSpinnerButton } from "@/components/ui-kit/LoadingSpinner";
 
 const NewRegister = () => {
@@ -72,10 +72,10 @@ const NewRegister = () => {
     <div className="max-w-xl mx-auto  scale-90 p-4  border  rounded-lg shadow-sm md:p-6 border-gray-700 bg-gray-800">
       <div className="flex justify-between items-center mb-4">
         <p className="text-lg font-semibold">ثبت نام</p>
-        <ReturnButtonLogin />
+        <ReturnButton />
       </div>
       <div className="flex flex-col justify-start items-start w-full">
-        <TextFieldLogin
+        <TextField
           id="name"
           placeholder="نام"
           label=""
@@ -83,7 +83,7 @@ const NewRegister = () => {
           state={personPayment.name}
         />
         <div className="w-full my-5">
-          <TextFieldLogin
+          <TextField
             id="lastName"
             placeholder="نام خانوادگی"
             label=""
@@ -92,7 +92,7 @@ const NewRegister = () => {
           />
         </div>
         <div className="w-full mb-5">
-          <TextFieldLogin
+          <TextField
             id="amount"
             placeholder="مبلغ"
             label=""
@@ -101,7 +101,7 @@ const NewRegister = () => {
           />
         </div>
         <div className="w-full mb-5">
-          <TextFieldLogin
+          <TextField
             id="companyName"
             placeholder="نام شرکت"
             label=""
@@ -109,14 +109,14 @@ const NewRegister = () => {
             state={personPayment.companyName}
           />
         </div>
-        <TextFieldLogin
+        <TextField
           id="mobile"
           placeholder="موبایل"
           label=""
           onChange={handleChange}
           state={personPayment.mobile}
         />
-        <ListBoxSelectLogin
+        <ListBoxSelect
           items={ACTIVITIES_FIELD}
           selected={selected}
           setSelected={setSelected}
@@ -125,14 +125,14 @@ const NewRegister = () => {
           className="w-full my-5"
         />
         <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0 sm:space-x-4 w-full">
-          <PrimaryButtonsLogin
+          <PrimaryButtons
             onClick={registerNewPerson}
             fullWidth
             className="my-10"
             disabled={disableButton || loading}
           >
             {loading ? <LoadingSpinnerButton /> : "ثبت نام"}
-          </PrimaryButtonsLogin>
+          </PrimaryButtons>
         </div>
       </div>
     </div>

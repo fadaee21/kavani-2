@@ -10,7 +10,7 @@ const ReturnButton = () => {
     <button
       onClick={handleNavigate}
       className={
-        "w-28 flex items-center justify-center py-2 rounded-md shadow-md whitespace-nowrap bg-indigo-400 hover:bg-indigo-500 dark:bg-indigo-900 hover:dark:bg-indigo-800 hover:text-slate-900 hover:dark:text-slate-50 text-gray-800 dark:text-slate-300"
+        "w-28 flex items-center justify-center py-2 rounded-md shadow-md whitespace-nowrap bg-[#FD4718] hover:bg-[#FD4718]/90   text-gray-50"
       }
     >
       بازگشت

@@ -1,7 +1,7 @@
 import TableContent from "@/components/registered-accounts/TableContent";
 // import TableContentAccounts from "@/components/registered-accounts/TableContentAccounts";
 
-const RegisteredAccount = () => {
+const ServicesList = () => {
   const fetchUrl = (page: number, pageSize: number) =>
     `/panel/accounts/get/registered/${page}/${pageSize}`;
   return (
@@ -11,12 +11,13 @@ const RegisteredAccount = () => {
   );
 };
 
-export default RegisteredAccount;
+export default ServicesList;
 
 const headers = [
-  { key: "first_name", label: "نام" },
-  { key: "last_name", label: "نام خانوادگی" },
-  { key: "mobile", label: "موبایل" },
-  { key: "voucher", label: "کد تخفیف" },
+  { key: "", label: "kol" },
+  { key: "", label: "نام سرویس" },
+  { key: "", label: "قیمت سرویس" },
+  { key: "", label: "درصد تخفیف" },
+  { key: "", label: "درصد کاوانی" },
+  { key: "", label: "میزان پیش پرداخت" },
 ];
-

@@ -1,11 +1,12 @@
 import React, { InputHTMLAttributes, ReactNode, forwardRef } from "react";
+import { Field, Input, Label } from "@headlessui/react";
 import clsx from "clsx/lite";
 
 interface IProps extends InputHTMLAttributes<HTMLInputElement> {
   state: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   id: string;
-  label: string;
+  label?: string;
   icon?: ReactNode;
   onClick?: () => void;
   labelClass?: string;
@@ -29,21 +30,23 @@ export const TextField = forwardRef<HTMLInputElement, IProps>(
     ref
   ) => {
     const labelClasses = clsx(
-      "block w-full mb-1 text-sm font-medium leading-6 text-gray-900 dark:text-slate-300 whitespace-nowrap",
+      "block w-full mb-1 text-sm font-medium leading-6 text-slate-300 whitespace-nowrap",
       labelClass
     );
     const inputClasses = clsx(
-      "w-full  rounded-md border-0 py-1.5 block shadow-sm ring-1 ring-inset placeholder:text-gray-400 text-sm leading-6 pl-10 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-slate-300 ring-gray-300 dark:ring-gray-600 focus:ring-2 focus:ring-inset  focus:ring-indigo-400 dark:focus:ring-indigo-500",
+      "w-full h-14 rounded-2xl border-0 py-1.5 block shadow-sm ring-inset placeholder-gray-400 text-gray-50 text-lg leading-6 pl-10 bg-[#FFFFFF1A]  ring-gray-300 ring-gray-600 focus:ring-0 ",
       inputClass
     );
 
     return (
-      <>
-        <label htmlFor={id} className={labelClasses}>
-          {label}
-        </label>
+      <Field>
+        {label && (
+          <Label htmlFor={id} className={labelClasses}>
+            {label}
+          </Label>
+        )}
         <div className={`relative w-full ${className}`}>
-          <input
+          <Input
             className={inputClasses}
             value={state}
             onChange={onChange}
@@ -57,13 +60,13 @@ export const TextField = forwardRef<HTMLInputElement, IProps>(
               onClick={onClick}
               type="button"
               aria-label={label}
-              className="absolute inset-y-0 left-0 pl-3 flex items-center cursor-default"
+              className="absolute inset-y-0 left-0 pl-3 flex items-center cursor-pointer text-gray-400 focus:ring-0 outline-none"
             >
               {icon}
             </button>
           )}
         </div>
-      </>
+      </Field>
     );
   }
 );

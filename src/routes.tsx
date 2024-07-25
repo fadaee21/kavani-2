@@ -8,8 +8,9 @@ import PersistLogin from "@components/auth/PersistLogin";
 import RootLayout from "@components/layout/RootLayout";
 import NotFoundPage from "@pages/not-found/NotFoundPage";
 import Test from "./pages/test";
-import NewRegister from "./pages/new-register/NewRegister";
 import PaymentSuccess from "./pages/success-payment/SuccessPayment";
+import ServicesList from "./pages/services-list/ServicesList";
+import KolLIst from "./pages/kol-list/KolLIst";
 
 const router = createBrowserRouter([
   {
@@ -46,12 +47,16 @@ const router = createBrowserRouter([
             element: <RequireAuth allowedRoles={["KAVANI"]} />,
             children: [
               {
-                path: "new-register",
-                element: <NewRegister />,
-              },
-              {
                 path: "registered-account",
                 element: <RegisteredAccount />,
+              },
+              {
+                path: "services-list",
+                element: <ServicesList />,
+              },
+              {
+                path: "kol-list",
+                element: <KolLIst />,
               },
             ],
           },
@@ -68,7 +73,9 @@ const router = createBrowserRouter([
           // },
           {
             path: "settings",
-            element: <RequireAuth allowedRoles={["KAVANI", "KOL", "GOOD_SUPPLIER"]} />, //add all allowed roles
+            element: (
+              <RequireAuth allowedRoles={["KAVANI", "KOL", "GOOD_SUPPLIER"]} />
+            ), //add all allowed roles
             children: [
               {
                 index: true,
