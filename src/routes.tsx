@@ -11,6 +11,9 @@ import Test from "./pages/test";
 import PaymentSuccess from "./pages/success-payment/SuccessPayment";
 import ServicesList from "./pages/services-list/ServicesList";
 import KolLIst from "./pages/kol-list/KolLIst";
+import NewRegister from "./pages/registered-account/NewRegister";
+import NewService from "./pages/services-list/NewService";
+import NewKol from "./pages/kol-list/NewKol";
 
 const router = createBrowserRouter([
   {
@@ -48,15 +51,42 @@ const router = createBrowserRouter([
             children: [
               {
                 path: "registered-account",
-                element: <RegisteredAccount />,
+                children: [
+                  {
+                    index: true,
+                    element: <RegisteredAccount />,
+                  },
+                  {
+                    path: "new",
+                    element: <NewRegister />,
+                  },
+                ],
               },
               {
                 path: "services-list",
-                element: <ServicesList />,
+                children: [
+                  {
+                    index: true,
+                    element: <ServicesList />,
+                  },
+                  {
+                    path: "new",
+                    element: <NewService />,
+                  },
+                ],
               },
               {
                 path: "kol-list",
-                element: <KolLIst />,
+                children: [
+                  {
+                    index: true,
+                    element: <KolLIst />,
+                  },
+                  {
+                    path: "new",
+                    element: <NewKol />,
+                  },
+                ],
               },
             ],
           },

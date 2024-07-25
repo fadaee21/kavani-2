@@ -1,7 +1,6 @@
 import CheckboxOne from "@/components/ui-kit/CheckBox";
 import { LoadingSpinnerButton } from "@/components/ui-kit/LoadingSpinner";
 // import MySwitch from "@/components/ui-kit/MySwitch";
-import { PrimaryButtons } from "@/components/ui-kit/buttons/PrimaryButtons";
 import { useAuth } from "@/hooks/context/useAuth";
 import useLogin from "@/hooks/useLogin";
 import { useEffect, useRef, useState } from "react";
@@ -12,6 +11,7 @@ import kavaniLogo from "@/assets/images/kavani.png";
 import ListBoxSelect from "@/components/ui-kit/ListBoxSelect";
 import { LOGIN_ROLE } from "@/const/loginRole";
 import { TextField } from "@/components/ui-kit/TextField";
+import { PrimaryButtons } from "@/components/ui-kit/buttons/PrimaryButtons";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -86,7 +86,7 @@ export default function LoginPage() {
               />
             </div>
 
-            <PrimaryButtons type="submit" disabled={loading} fullWidth>
+            <PrimaryButtons type="submit" disabled={loading}  className="rounded-3xl w-full">
               {loading ? <LoadingSpinnerButton /> : "ورود"}
             </PrimaryButtons>
             <CheckboxOne

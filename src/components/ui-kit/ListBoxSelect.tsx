@@ -59,10 +59,12 @@ export default function ListBoxSelect({
 
   return (
     <div className={clsx("w-full", className)}>
-      <Listbox value={selected} onChange={setSelected} disabled={disabled} >
-        <Label className="block w-full mb-1 text-sm font-medium leading-6   text-gray-50 whitespace-nowrap">
-          {label}
-        </Label>
+      <Listbox value={selected} onChange={setSelected} disabled={disabled}>
+        {label && (
+          <Label className="block w-full mb-1 text-sm font-medium leading-6   text-gray-50 whitespace-nowrap">
+            {label}
+          </Label>
+        )}
 
         <div className="relative w-full">
           <ListboxButton
@@ -75,7 +77,7 @@ export default function ListBoxSelect({
               {selected?.label ? (
                 <span
                   className={clsx(
-                    "ml-3 block truncate text-gray-50 ",
+                    "ml-3 block truncate text-gray-50 "
                     // selected ? "font-semibold" : "font-normal"
                   )}
                 >
@@ -94,7 +96,7 @@ export default function ListBoxSelect({
               />
             </span>
           </ListboxButton>
-          <ListboxOptions className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md  bg-gray-700 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+          <ListboxOptions className="absolute z-10 max-h-56 w-full overflow-auto rounded-md  bg-gray-700 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
             {items.map(renderItem)}
           </ListboxOptions>
         </div>

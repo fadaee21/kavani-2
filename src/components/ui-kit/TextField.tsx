@@ -39,13 +39,14 @@ export const TextField = forwardRef<HTMLInputElement, IProps>(
     );
 
     return (
-      <Field>
-        {label && (
-          <Label htmlFor={id} className={labelClasses}>
-            {label}
-          </Label>
-        )}
-        <div className={`relative w-full ${className}`}>
+      <div className={`relative w-full ${className}`}>
+        <Field>
+          {label && (
+            <Label htmlFor={id} className={labelClasses}>
+              {label}
+            </Label>
+          )}
+
           <Input
             className={inputClasses}
             value={state}
@@ -65,8 +66,8 @@ export const TextField = forwardRef<HTMLInputElement, IProps>(
               {icon}
             </button>
           )}
-        </div>
-      </Field>
+        </Field>
+      </div>
     );
   }
 );

@@ -4,9 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "./context/useAuth";
 import { loginInfoSchema } from "@/validator/loginInfoSchema";
 import Cookies from "js-cookie";
-
 import { jwtDecode } from "jwt-decode";
-// import { getRole } from "@/helper/getRole";
 import { axiosInstance } from "@/services/axios";
 import axios from "axios";
 
@@ -52,12 +50,10 @@ const useLogin = ({ password: pwd, username: user, role }: TLoginInfo) => {
           sameSite: "strict",
         });
         console.log({ userInfo });
-        // const roles = getRole(userInfo.roles);
         setAuth({
           user: userInfo.username,
           roles: userInfo.roles[0],
           accessToken,
-
           pwd: "",
         });
         navigate(from, { replace: true });

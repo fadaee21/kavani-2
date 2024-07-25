@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { mutate } from "swr";
+// import { mutate } from "swr";
 import axiosPrivate from "@/services/axios";
 import { toast } from "react-toastify";
 import router from "@/routes";
@@ -22,8 +22,6 @@ const NewRegister = () => {
     name: "",
     lastName: "",
     mobile: "",
-    amount: "",
-    companyName: "",
     callBackUrl,
   });
 
@@ -43,7 +41,7 @@ const NewRegister = () => {
         accountActivityType: selected?.value,
       });
       if (res.status === 200) {
-        mutate(`/panel/banner/get/all/0/100`);
+        // mutate(`/panel/banner/get/all/0/100`);
         toast.success("پیامک به زودی برای کاربر ارسال میشود");
         router.navigate("/kvn/registered-account");
       } else {
@@ -74,45 +72,25 @@ const NewRegister = () => {
         <p className="text-lg font-semibold">ثبت نام</p>
         <ReturnButton />
       </div>
-      <div className="flex flex-col justify-start items-start w-full">
+
+      <div className="flex flex-col justify-start items-start w-full space-y-5 my-10">
         <TextField
           id="name"
           placeholder="نام"
-          label=""
           onChange={handleChange}
           state={personPayment.name}
+          inputClass="w-full"
         />
-        <div className="w-full my-5">
-          <TextField
-            id="lastName"
-            placeholder="نام خانوادگی"
-            label=""
-            onChange={handleChange}
-            state={personPayment.lastName}
-          />
-        </div>
-        <div className="w-full mb-5">
-          <TextField
-            id="amount"
-            placeholder="مبلغ"
-            label=""
-            onChange={handleChange}
-            state={personPayment.amount}
-          />
-        </div>
-        <div className="w-full mb-5">
-          <TextField
-            id="companyName"
-            placeholder="نام شرکت"
-            label=""
-            onChange={handleChange}
-            state={personPayment.companyName}
-          />
-        </div>
+        <TextField
+          id="lastName"
+          placeholder="نام خانوادگی"
+          onChange={handleChange}
+          state={personPayment.lastName}
+          inputClass="w-full"
+        />
         <TextField
           id="mobile"
           placeholder="موبایل"
-          label=""
           onChange={handleChange}
           state={personPayment.mobile}
         />
@@ -120,21 +98,18 @@ const NewRegister = () => {
           items={ACTIVITIES_FIELD}
           selected={selected}
           setSelected={setSelected}
-          label=""
           placeholder="انتخاب نوع فعالیت"
-          className="w-full my-5"
+          className="w-full"
         />
-        <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0 sm:space-x-4 w-full">
-          <PrimaryButtons
-            onClick={registerNewPerson}
-            fullWidth
-            className="my-10"
-            disabled={disableButton || loading}
-          >
-            {loading ? <LoadingSpinnerButton /> : "ثبت نام"}
-          </PrimaryButtons>
-        </div>
       </div>
+
+      <PrimaryButtons
+        onClick={registerNewPerson}
+        className="w-full rounded-3xl "
+        disabled={disableButton || loading}
+      >
+        {loading ? <LoadingSpinnerButton /> : "ثبت نام"}
+      </PrimaryButtons>
     </div>
   );
 };
