@@ -69,7 +69,7 @@ export default function ListBoxSelect({
         <div className="relative w-full">
           <ListboxButton
             className={clsx(
-              "relative w-full h-14 rounded-2xl border-0 py-1.5 pl-10 pr-3 block shadow-sm ring-inset  text-gray-50 text-md leading-6 bg-[#FFFFFF1A]   ring-gray-600 focus:ring-0 outline-none",
+              "relative w-full h-12 md:h-16 rounded-3xl border-0 py-1.5 pl-10 pr-3 block shadow-sm ring-inset  text-gray-50 text-md leading-6 bg-[#FFFFFF1A]   ring-gray-600 focus:ring-0 outline-none",
               disabled && "opacity-50 cursor-not-allowed"
             )}
           >

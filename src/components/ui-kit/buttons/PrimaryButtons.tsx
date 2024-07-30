@@ -7,8 +7,8 @@ export const PrimaryButtons: React.FC<
   const buttonStyle = clsx(
     {
       "bg-gray-400 text-gray-500 cursor-not-allowed": disabled,
-      "bg-[#FD4718] hover:bg-[#FD4718]/90 text-gray-800": !disabled,
-      "flex justify-center px-4 py-3 text-sm font-semibold text-white shadow-md whitespace-nowrap":
+      "bg-orange-600 hover:bg-orange-600/90 text-gray-800": !disabled,
+      "flex justify-center h-12 p-3 rounded-3xl text-sm font-semibold text-white shadow-md whitespace-nowrap justify-center items-center gap-2 inline-flex":
         true,
     },
     className
