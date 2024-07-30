@@ -12,17 +12,32 @@ import { TextField } from "@/components/ui-kit/TextField";
 import { PrimaryButtons } from "@/components/ui-kit/buttons/PrimaryButtons";
 import ReturnButton from "@/components/ui-kit/buttons/ReturnButton";
 import { LoadingSpinnerButton } from "@/components/ui-kit/LoadingSpinner";
+import useSWRMutation from "swr/mutation";
+import axiosPrivate from "@/services/axios";
+
+interface IService {
+  kolId: string;
+  name: string;
+  servicePrice: string;
+  discount: string;
+  kavaniPercentage: string;
+  prepayment: string;
+}
+const fetcherPost = (url: string, { arg }: { arg: IService }) =>
+  axiosPrivate.post(url, arg).then((res) => res.data);
 
 const NewService = () => {
-  const [selected, setSelected] = useState<SelectedOption | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [service, setService] = useState({
-    kol: "",
-    serviceName: "",
+  const { trigger, isMutating } = useSWRMutation(`/service/add`, fetcherPost);
+
+  // const [selected, setSelected] = useState<SelectedOption | null>(null);
+  // const [loading, setLoading] = useState(false);
+  const [service, setService] = useState<IService>({
+    kolId: "", //"سرویس دهنده یافت نشد"
+    name: "",
     servicePrice: "",
-    serviceDiscount: "",
-    serviceCommission: "",
-    servicePrepayment: "",
+    discount: "",
+    kavaniPercentage: "",
+    prepayment: "",
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,37 +50,13 @@ const NewService = () => {
 
   const registerNewPerson = async () => {
     console.log({ service });
-    // try {
-    //   setLoading(true);
-    //   const validatedData = personPaymentSchema.parse(service);
-    //   const res = await axiosPrivate.post("/panel/accounts/add", {
-    //     ...validatedData,
-    //     accountActivityType: selected?.value,
-    //   });
-    //   if (res.status === 200) {
-    //     toast.success("پیامک به زودی برای کاربر ارسال میشود");
-    //     router.navigate("/kvn/registered-account");
-    //   } else {
-    //     toast.error("مشکلی پیش آمد، دوباره تلاش کنید");
-    //   }
-    // } catch (error) {
-    //   const err = alertErr(error);
-    //   console.log({ err });
-    //   toast.error(err?.[0]);
-    //   if (axios.isAxiosError(error)) {
-    //     const { code } = error.response?.data.body || {};
-    //     if (code === "10") {
-    //       toast.error("کاربری با این مشخصات وجود دارد");
-    //       return;
-    //     }
-    //     toast.error("مشکلی پیش آمد، دوباره تلاش کنید");
-    //   }
-    // } finally {
-    //   setLoading(false);
-    // }
+    try {
+      await trigger(service);
+    } catch (err) {
+      console.error(err);
+    }
   };
-  const disableButton =
-    Object.values(service).some((value) => value === "") || !selected;
+  const disableButton = Object.values(service).some((value) => value === "");
   return (
     <div className="max-w-xl mx-auto  scale-90 p-4  border  rounded-lg shadow-sm md:p-6 border-gray-700 bg-gray-800">
       <div className="flex justify-between items-center mb-4">
@@ -75,17 +66,17 @@ const NewService = () => {
 
       <div className="flex flex-col justify-start items-start w-full space-y-5 my-10">
         <TextField
-          id="kol"
-          placeholder="kol"
+          id="kolId"
+          placeholder="kolId"
           onChange={handleChange}
-          state={service.kol}
+          state={service.kolId}
           inputClass="w-full"
         />
         <TextField
-          id="serviceName"
+          id="name"
           placeholder="نام سرویس"
           onChange={handleChange}
-          state={service.serviceName}
+          state={service.name}
           inputClass="w-full"
         />
         <TextField
@@ -95,31 +86,31 @@ const NewService = () => {
           state={service.servicePrice}
         />
         <TextField
-          id="serviceDiscount"
+          id="discount"
           placeholder="درصد تخفیف"
           onChange={handleChange}
-          state={service.serviceDiscount}
+          state={service.discount}
         />
         <TextField
-          id="serviceCommission"
+          id="kavaniPercentage"
           placeholder="درصد کاوانی"
           onChange={handleChange}
-          state={service.serviceCommission}
+          state={service.kavaniPercentage}
         />
         <TextField
-          id="servicePrepayment"
+          id="prepayment"
           placeholder="میزان پیش پرداخت"
           onChange={handleChange}
-          state={service.servicePrepayment}
+          state={service.prepayment}
         />
       </div>
 
       <PrimaryButtons
         onClick={registerNewPerson}
         className="w-full rounded-3xl "
-        disabled={disableButton || loading}
+        disabled={disableButton || isMutating}
       >
-        {loading ? <LoadingSpinnerButton /> : "ثبت سرویس"}
+        {isMutating ? <LoadingSpinnerButton /> : "ثبت سرویس"}
       </PrimaryButtons>
     </div>
   );

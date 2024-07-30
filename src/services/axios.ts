@@ -13,3 +13,7 @@ const axiosPrivate = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 export default axiosPrivate;
+
+export const fetcherPost = (url: string) =>
+  axiosPrivate.post(url).then((res) => res.data);
+// For fetching data, you should use `useAxiosPrivate` along with `useSWR` to properly configure the request.

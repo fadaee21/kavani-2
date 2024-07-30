@@ -12,11 +12,22 @@ import { TextField } from "@/components/ui-kit/TextField";
 import { PrimaryButtons } from "@/components/ui-kit/buttons/PrimaryButtons";
 import ReturnButton from "@/components/ui-kit/buttons/ReturnButton";
 import { LoadingSpinnerButton } from "@/components/ui-kit/LoadingSpinner";
+import axiosPrivate from "@/services/axios";
+import useSWRMutation from "swr/mutation";
+import router from "@/routes";
+import { toast } from "react-toastify";
+interface IKole {
+  name: string;
+  officialName: string;
+  address: string;
+}
+const fetcherPost = (url: string, { arg }: { arg: IKole }) =>
+  axiosPrivate.post(url, arg).then((res) => res.data);
 
 const NewKol = () => {
-  const [selected, setSelected] = useState<SelectedOption | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [kol, setKol] = useState({
+  const { trigger, isMutating } = useSWRMutation(`/kol/add`, fetcherPost);
+
+  const [kol, setKol] = useState<IKole>({
     name: "",
     officialName: "",
     address: "",
@@ -32,37 +43,18 @@ const NewKol = () => {
 
   const registerNewPerson = async () => {
     console.log({ kol });
-    // try {
-    //   setLoading(true);
-    //   const validatedData = personPaymentSchema.parse(kol);
-    //   const res = await axiosPrivate.post("/panel/accounts/add", {
-    //     ...validatedData,
-    //     accountActivityType: selected?.value,
-    //   });
-    //   if (res.status === 200) {
-    //     toast.success("پیامک به زودی برای کاربر ارسال میشود");
-    //     router.navigate("/kvn/registered-account");
-    //   } else {
-    //     toast.error("مشکلی پیش آمد، دوباره تلاش کنید");
-    //   }
-    // } catch (error) {
-    //   const err = alertErr(error);
-    //   console.log({ err });
-    //   toast.error(err?.[0]);
-    //   if (axios.isAxiosError(error)) {
-    //     const { code } = error.response?.data.body || {};
-    //     if (code === "10") {
-    //       toast.error("کاربری با این مشخصات وجود دارد");
-    //       return;
-    //     }
-    //     toast.error("مشکلی پیش آمد، دوباره تلاش کنید");
-    //   }
-    // } finally {
-    //   setLoading(false);
-    // }
+    try {
+      const res = await trigger(kol);
+      console.log({ res });
+      if (res.is_successful) {
+        router.navigate("/kvn/kol-list");
+        toast.success("سرویس دهنده با موفقیت ثبت شد");
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
-  const disableButton =
-    Object.values(kol).some((value) => value === "") || !selected;
+  const disableButton = Object.values(kol).some((value) => value === "");
   return (
     <div className="max-w-xl mx-auto  scale-90 p-4  border  rounded-lg shadow-sm md:p-6 border-gray-700 bg-gray-800">
       <div className="flex justify-between items-center mb-4">
@@ -86,19 +78,19 @@ const NewKol = () => {
           inputClass="w-full"
         />
         <TextField
-          id="officialName"
+          id="address"
           placeholder="آدرس"
           onChange={handleChange}
-          state={kol.officialName}
+          state={kol.address}
         />
       </div>
 
       <PrimaryButtons
         onClick={registerNewPerson}
         className="w-full rounded-3xl "
-        disabled={disableButton || loading}
+        disabled={disableButton || isMutating}
       >
-        {loading ? <LoadingSpinnerButton /> : "ثبت سرویس دهنده"}
+        {isMutating ? <LoadingSpinnerButton /> : "ثبت سرویس دهنده"}
       </PrimaryButtons>
     </div>
   );
