@@ -23,7 +23,7 @@ const CheckboxOne = ({ isChecked, label, ...rest }: IProps) => {
             <span
               className={`h-4 w-4 rounded-md ${
                 isChecked
-                  ? "bg-[#FD4718] dark:bg-[#FD4718] "
+                  ? "bg-orange-600 dark:bg-orange-600 "
                   : "bg-white dark:bg-gray-300"
               }`}
             ></span>

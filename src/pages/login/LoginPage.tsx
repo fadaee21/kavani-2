@@ -1,12 +1,10 @@
 import CheckboxOne from "@/components/ui-kit/CheckBox";
 import { LoadingSpinnerButton } from "@/components/ui-kit/LoadingSpinner";
-// import MySwitch from "@/components/ui-kit/MySwitch";
 import { useAuth } from "@/hooks/context/useAuth";
 import useLogin from "@/hooks/useLogin";
 import { useEffect, useRef, useState } from "react";
-
-// Import the background image
 import backgroundImage from "@/assets/images/flat-wall-concrete-with-black-hole-middle.png";
+import backgroundImageMobile from "@/assets/images/flat-wall-concrete-with-black-hole-middle-mobile.png";
 import kavaniLogo from "@/assets/images/kavani.png";
 import ListBoxSelect from "@/components/ui-kit/ListBoxSelect";
 import { LOGIN_ROLE } from "@/const/loginRole";
@@ -37,78 +35,98 @@ export default function LoginPage() {
     });
   };
 
+  const renderForm = () => (
+    <form className="space-y-8 w-full" onSubmit={handleSubmit}>
+      <div className="space-y-8">
+        <TextField
+          required
+          autoComplete="off"
+          ref={userRef}
+          id="username"
+          onChange={handleChange}
+          state={loginInfo.username}
+          placeholder="نام کاربری"
+        />
+        <TextField
+          required
+          autoComplete="off"
+          type={showPassword ? "text" : "password"}
+          id="password"
+          onChange={handleChange}
+          state={loginInfo.password}
+          placeholder="رمز ورود"
+          icon={showPassword ? eyeSlash : eye}
+          onClick={() => setShowPassword(!showPassword)}
+        />
+        <ListBoxSelect
+          items={LOGIN_ROLE}
+          selected={selectedRole}
+          setSelected={setSelectedRole}
+          label=""
+          placeholder="نوع کاربری"
+          className="w-full my-5"
+        />
+      </div>
+
+      <PrimaryButtons
+        type="submit"
+        disabled={loading}
+        className="rounded-3xl w-full"
+      >
+        {loading ? <LoadingSpinnerButton /> : "ورود"}
+      </PrimaryButtons>
+      <CheckboxOne
+        isChecked={persist}
+        onChange={() => setPersist(!persist)}
+        label="مرا به خاطر بسپار"
+      />
+    </form>
+  );
+
   return (
-    <div
-      className="flex items-center justify-center min-h-screen bg-cover bg-center bg-[#27282B] relative"
-      style={{ backgroundImage: `url(${backgroundImage})` }}
-    >
-      <div className="absolute top-1/2 left-0 transform translate-x-1/2 -translate-y-1/2 ">
-        <img src={kavaniLogo} alt="kavani logo" />
-      </div>
-
-      <div className="w-1/2 flex items-end justify-center flex-col p-6 ml-auto rounded-md md:p-8">
-        <div className="w-full max-w-sm mx-auto">
-          <h2 className="my-4 font-[Cinema] text-2xl font-bold leading-9 tracking-tight text-center text-gray-50 sm:text-2xl xl:text-4xl">
-            ورود به حساب کاربری
-          </h2>
+    <>
+      <div
+        className="md:flex items-center justify-center min-h-screen bg-cover bg-bottom bg-zinc-800 relative hidden "
+        style={{ backgroundImage: `url(${backgroundImage})` }}
+      >
+        <div className="absolute top-1/2 left-0 transform translate-x-1/2 -translate-y-1/2 scale-75 xl:scale-100">
+          <img src={kavaniLogo} alt="kavani logo" />
         </div>
-
-        <div className="w-full max-w-sm mx-auto">
-          <form className="space-y-8" onSubmit={handleSubmit}>
-            <div className="space-y-8">
-              <TextField
-                required
-                autoComplete="off"
-                ref={userRef}
-                id="username"
-                onChange={handleChange}
-                state={loginInfo.username}
-                placeholder="نام کاربری"
-              />
-              <TextField
-                required
-                autoComplete="off"
-                type={showPassword ? "text" : "password"}
-                id="password"
-                onChange={handleChange}
-                state={loginInfo.password}
-                placeholder="رمز ورود"
-                icon={showPassword ? eyeSlash : eye}
-                onClick={() => setShowPassword(!showPassword)}
-              />
-              <ListBoxSelect
-                items={LOGIN_ROLE}
-                selected={selectedRole}
-                setSelected={setSelectedRole}
-                label=""
-                placeholder="نوع کاربری"
-                className="w-full my-5"
-              />
-            </div>
-
-            <PrimaryButtons type="submit" disabled={loading}  className="rounded-3xl w-full">
-              {loading ? <LoadingSpinnerButton /> : "ورود"}
-            </PrimaryButtons>
-            <CheckboxOne
-              isChecked={persist}
-              onChange={() => setPersist(!persist)}
-              label="مرا به خاطر بسپار"
-            />
-          </form>
-          {errRes && errRes.length > 0 ? (
-            <ul className="p-2 mt-4 text-xs font-medium list-disc list-inside rounded-lg shadow-sm max-h-16 bg-rose-50 dark:bg-rose-950">
-              {errRes.map((error, index) => (
-                <li className="text-rose-950 dark:text-rose-50" key={index}>
-                  {error}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <div className="w-full h-10 mt-1" />
-          )}
+        <div className="w-1/2 flex items-end justify-center flex-col p-6 ml-auto rounded-md md:p-8">
+          <div className="w-full max-w-sm mx-auto">
+            <h2 className="my-4 font-[Cinema] text-2xl font-bold leading-9 tracking-tight text-center text-gray-50 sm:text-2xl md:text-4xl">
+              ورود به حساب کاربری
+            </h2>
+          </div>
+          <div className="w-full max-w-sm mx-auto">
+            {renderForm()}
+            {errRes && errRes.length > 0 ? (
+              <ul className="p-2 mt-4 text-xs font-medium list-disc list-inside rounded-lg shadow-sm max-h-16 bg-rose-50 dark:bg-rose-950">
+                {errRes.map((error, index) => (
+                  <li className="text-rose-950 dark:text-rose-50" key={index}>
+                    {error}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className="w-full h-10 mt-1" />
+            )}
+          </div>
         </div>
       </div>
-    </div>
+
+      <div
+        className="md:hidden items-center justify-start min-h-screen bg-no-repeat bg-contain bg-bottom bg-[#27282B] relative flex flex-col"
+        style={{ backgroundImage: `url(${backgroundImageMobile})` }}
+      >
+        <div className="w-11/12 max-w-96 flex-col justify-center items-start gap-9 mt-10 inline-flex">
+          {renderForm()}
+        </div>
+        <div className="transform scale-50 absolute left-1/2  -translate-x-1/2 translate-y-14 bottom-0  ">
+          <img src={kavaniLogo} alt="kavani logo" />
+        </div>
+      </div>
+    </>
   );
 }
 const eye = (
