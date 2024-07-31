@@ -32,13 +32,16 @@ const NewRegister = () => {
     });
   };
 
-  const registerNewPerson = async () => {
+  const registerNewPerson = async () => {3
+    // TODO:change this with useSWRMutation
+    console.log({personPayment})
     try {
       setLoading(true);
       const validatedData = personPaymentSchema.parse(personPayment);
+  
       const res = await axiosPrivate.post("/panel/accounts/add", {
         ...validatedData,
-        accountActivityType: selected?.value,
+        serviceName: selected?.value,
       });
       if (res.status === 200) {
         // mutate(`/panel/banner/get/all/0/100`);
@@ -49,6 +52,7 @@ const NewRegister = () => {
       }
       // console.log(res.data);
     } catch (error) {
+      console.log({error})
       const err = alertErr(error);
       console.log({ err });
       toast.error(err?.[0]);

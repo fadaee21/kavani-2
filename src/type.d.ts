@@ -84,6 +84,10 @@ type ResponseDataNoArray<T> = {
   is_successful: boolean;
 };
 
+
+
+
+
 type User = {
   id: number;
   first_name: string;
@@ -118,25 +122,11 @@ type IFieldConfig = {
   available: boolean;
 };
 
-interface IBanner {
-  id: number;
-  name: string;
-  width: number;
-  height: number;
-  position: "UP" | "MID" | "BOT" | "";
-  firstB64Image: string;
-  enable: boolean;
-}
-interface IBannerPUT {
-  id: number;
-  height: number;
-  position: "UP" | "MID" | "BOT" | "";
-  enable: boolean;
-  banner_name: string;
-  actionType: "delete" | "activate" | "";
-}
-interface IBannerImg extends IBanner {
-  b64Images: string[];
+interface IKolGetAll {
+  id: number
+  officialName: string
+  name: string
+  address: string
 }
 
 /*=========================================

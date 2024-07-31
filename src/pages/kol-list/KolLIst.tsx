@@ -2,16 +2,14 @@ import TableContent from "@/components/registered-accounts/TableContent";
 import { PrimaryButtons } from "@/components/ui-kit/buttons/PrimaryButtons";
 import Pagination from "@/components/ui-kit/Pagination";
 import router from "@/routes";
-import { fetcherPost } from "@/services/axios";
 import { useState } from "react";
 import useSWR from "swr";
 const PAGE_SIZE = 20;
 
 const KolLIst = () => {
   const [page, setPage] = useState(1);
-  const { data, isLoading } = useSWR(
-    `/kol/search/${page - 1}/${PAGE_SIZE}`,
-    fetcherPost
+  const { data, isLoading } = useSWR<ResponseData<IKolGetAll>>(
+    `/kol/get/all/${page - 1}/${PAGE_SIZE}`
   );
   const totalElements = data?.body.totalElements || 0;
   return (

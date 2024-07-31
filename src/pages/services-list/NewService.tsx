@@ -1,19 +1,14 @@
 import { useState } from "react";
-// import { mutate } from "swr";
-// import axiosPrivate from "@/services/axios";
-// import { toast } from "react-toastify";
-// import router from "@/routes";
-// import axios from "axios";
-// import { ACTIVITIES_FIELD } from "@/const/registerNewUser";
-// import { personPaymentSchema } from "@/validator/personPaymentSchema";
-// import alertErr from "@/validator/showError";
 import { TextField } from "@/components/ui-kit/TextField";
-// import ListBoxSelect from "@/components/ui-kit/ListBoxSelect";
 import { PrimaryButtons } from "@/components/ui-kit/buttons/PrimaryButtons";
 import ReturnButton from "@/components/ui-kit/buttons/ReturnButton";
 import { LoadingSpinnerButton } from "@/components/ui-kit/LoadingSpinner";
 import useSWRMutation from "swr/mutation";
 import axiosPrivate from "@/services/axios";
+import useSWR from "swr";
+import ListBoxSelect from "@/components/ui-kit/ListBoxSelect";
+import { toast } from "react-toastify";
+import router from "@/routes";
 
 interface IService {
   kolId: string;
@@ -28,11 +23,10 @@ const fetcherPost = (url: string, { arg }: { arg: IService }) =>
 
 const NewService = () => {
   const { trigger, isMutating } = useSWRMutation(`/service/add`, fetcherPost);
-
-  // const [selected, setSelected] = useState<SelectedOption | null>(null);
-  // const [loading, setLoading] = useState(false);
+  const { data } = useSWR<ResponseData<IKolGetAll>>(`/kol/get/all/0/100`);
+  const [selected, setSelected] = useState<SelectedOption | null>(null);
   const [service, setService] = useState<IService>({
-    kolId: "", //"سرویس دهنده یافت نشد"
+    kolId: "",
     name: "",
     servicePrice: "",
     discount: "",
@@ -51,7 +45,11 @@ const NewService = () => {
   const registerNewPerson = async () => {
     console.log({ service });
     try {
-      await trigger(service);
+      const res = await trigger(service);
+      if (res.is_successful) {
+        router.navigate("/kvn/services-list");
+        toast.success("سرویس  با موفقیت ثبت شد");
+      }
     } catch (err) {
       console.error(err);
     }
@@ -66,19 +64,31 @@ const NewService = () => {
 
       <div className="flex flex-col justify-start items-start w-full space-y-5 my-10">
         <TextField
-          id="kolId"
-          placeholder="kolId"
-          onChange={handleChange}
-          state={service.kolId}
-          inputClass="w-full"
-        />
-        <TextField
           id="name"
           placeholder="نام سرویس"
           onChange={handleChange}
           state={service.name}
           inputClass="w-full"
         />
+        {data ? (
+          <ListBoxSelect
+            items={data.body.content.map((kol) => ({
+              label: kol.name,
+              value: kol.id.toString(),
+            }))}
+            selected={selected}
+            setSelected={setSelected}
+            disabled={false}
+            placeholder="سرویس دهنده"
+          />
+        ) : (
+          <ListBoxSelect
+            items={[]}
+            selected={selected}
+            setSelected={setSelected}
+            placeholder={"سرویس دهنده"}
+          />
+        )}
         <TextField
           id="servicePrice"
           placeholder="قیمت سرویس"
