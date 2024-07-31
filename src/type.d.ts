@@ -128,6 +128,15 @@ interface IKolGetAll {
   name: string
   address: string
 }
+interface IServiceAll {
+  serviceId: number;
+  name: string;
+  kolName: string;
+  servicePrice: number;
+  discount: number;
+  kavaniPercentage: number;
+  prepayment: number;
+}
 
 /*=========================================
                                             

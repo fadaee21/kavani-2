@@ -4,7 +4,6 @@ import axiosPrivate from "@/services/axios";
 import { toast } from "react-toastify";
 import router from "@/routes";
 import axios from "axios";
-import { ACTIVITIES_FIELD } from "@/const/registerNewUser";
 import { personPaymentSchema } from "@/validator/personPaymentSchema";
 import alertErr from "@/validator/showError";
 import { TextField } from "@/components/ui-kit/TextField";
@@ -12,8 +11,11 @@ import ListBoxSelect from "@/components/ui-kit/ListBoxSelect";
 import { PrimaryButtons } from "@/components/ui-kit/buttons/PrimaryButtons";
 import ReturnButton from "@/components/ui-kit/buttons/ReturnButton";
 import { LoadingSpinnerButton } from "@/components/ui-kit/LoadingSpinner";
+import useSWR from "swr";
 
 const NewRegister = () => {
+  const { data } = useSWR<ResponseData<IServiceAll>>(`/service/get/all/0/100`);
+
   const origin = typeof window !== "undefined" && window.location.origin;
   const callBackUrl = `${origin}/success-payment`;
   const [selected, setSelected] = useState<SelectedOption | null>(null);
@@ -32,16 +34,16 @@ const NewRegister = () => {
     });
   };
 
-  const registerNewPerson = async () => {3
+  const registerNewPerson = async () => {
     // TODO:change this with useSWRMutation
-    console.log({personPayment})
+    console.log({ personPayment });
     try {
       setLoading(true);
       const validatedData = personPaymentSchema.parse(personPayment);
-  
+
       const res = await axiosPrivate.post("/panel/accounts/add", {
         ...validatedData,
-        serviceName: selected?.value,
+        serviceName: selected?.label, //TODO:it must change to service id
       });
       if (res.status === 200) {
         // mutate(`/panel/banner/get/all/0/100`);
@@ -52,7 +54,7 @@ const NewRegister = () => {
       }
       // console.log(res.data);
     } catch (error) {
-      console.log({error})
+      console.log({ error });
       const err = alertErr(error);
       console.log({ err });
       toast.error(err?.[0]);
@@ -98,13 +100,32 @@ const NewRegister = () => {
           onChange={handleChange}
           state={personPayment.mobile}
         />
-        <ListBoxSelect
-          items={ACTIVITIES_FIELD}
+        {/* <ListBoxSelect
+          items={data}
           selected={selected}
           setSelected={setSelected}
           placeholder="انتخاب نوع فعالیت"
           className="w-full"
-        />
+        /> */}
+        {data ? (
+          <ListBoxSelect
+            items={data.body.content.map((service) => ({
+              label: service.name,
+              value: service.serviceId.toString(),
+            }))}
+            selected={selected}
+            setSelected={setSelected}
+            disabled={false}
+            placeholder="انتخاب نوع فعالیت"
+          />
+        ) : (
+          <ListBoxSelect
+            items={[]}
+            selected={selected}
+            setSelected={setSelected}
+            placeholder={"انتخاب نوع فعالیت"}
+          />
+        )}
       </div>
 
       <PrimaryButtons

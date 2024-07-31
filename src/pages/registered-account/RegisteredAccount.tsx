@@ -29,6 +29,7 @@ const RegisteredAccount = () => {
           isLoading={isLoading}
           totalElements={totalElements}
           emptyText="هیچ کاربری ثبت نشده است"
+          primaryKey="id"
         />
       </div>
       <Pagination

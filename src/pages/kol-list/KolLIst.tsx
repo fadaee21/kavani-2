@@ -29,6 +29,7 @@ const KolLIst = () => {
           isLoading={isLoading}
           totalElements={totalElements}
           emptyText="هیچ سرویس دهنده ای ثبت نشده است"
+          primaryKey="id"
         />
       </div>
       <Pagination

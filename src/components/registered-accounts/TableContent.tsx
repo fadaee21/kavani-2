@@ -7,6 +7,7 @@ interface IProps {
   totalElements?: number;
   isLoading?: boolean;
   emptyText: string;
+  primaryKey: string;
 }
 
 const TableContent = ({
@@ -15,6 +16,7 @@ const TableContent = ({
   totalElements,
   isLoading,
   emptyText,
+  primaryKey,
 }: IProps) => {
   return (
     <div className="inline-block  w-full py-2 align-middle">
@@ -53,8 +55,8 @@ const TableContent = ({
                 </td>
               </tr>
             ) : (
-              data.map((item: { id: React.Key | null | undefined }) => (
-                <tr key={item.id}>{renderRow(item, headers)}</tr>
+              data.map((item) => (
+                <tr key={item[primaryKey]}>{renderRow(item, headers)}</tr>
               ))
             )}
           </tbody>

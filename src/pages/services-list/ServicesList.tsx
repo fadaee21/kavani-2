@@ -8,7 +8,7 @@ const PAGE_SIZE = 20;
 
 const ServicesList = () => {
   const [page, setPage] = useState(1);
-  const { data, isLoading } = useSWR(
+  const { data, isLoading } = useSWR<ResponseData<IServiceAll>>(
     `/service/get/all/${page - 1}/${PAGE_SIZE}`
   );
 
@@ -30,6 +30,7 @@ const ServicesList = () => {
           isLoading={isLoading}
           totalElements={totalElements}
           emptyText="هیچ سرویسی یافت نشد"
+          primaryKey="serviceId"
         />
       </div>
       <Pagination
@@ -46,7 +47,7 @@ export default ServicesList;
 
 const headers = [
   { key: "kolName", label: "سرویس دهنده" },
-  { key: "serviceId", label: "نام سرویس" },
+  { key: "name", label: "نام سرویس" },
   { key: "servicePrice", label: "قیمت سرویس" },
   { key: "discount", label: "درصد تخفیف" },
   { key: "kavaniPercentage", label: "درصد کاوانی" },
