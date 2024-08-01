@@ -2,12 +2,12 @@ import { createBrowserRouter } from "react-router-dom";
 import DashboardPage from "@pages/dashboard/DashboardPage";
 import LoginPage from "@pages/login/LoginPage";
 import RegisteredAccount from "@pages/registered-account/RegisteredAccount";
-import SettingPage from "@pages/setting/SettingPage";
+// import SettingPage from "@pages/setting/SettingPage";
 import RequireAuth from "@components/auth/RequireAuth";
 import PersistLogin from "@components/auth/PersistLogin";
 import RootLayout from "@components/layout/RootLayout";
 import NotFoundPage from "@pages/not-found/NotFoundPage";
-import Test from "./pages/test";
+// import Test from "./pages/test";
 import PaymentSuccess from "./pages/success-payment/SuccessPayment";
 import ServicesList from "./pages/services-list/ServicesList";
 import KolLIst from "./pages/kol-list/KolLIst";
@@ -90,29 +90,18 @@ const router = createBrowserRouter([
               },
             ],
           },
-
           // {
-          //   path: "KAVANI",
-          //   element: <RequireAuth allowedRoles={["KAVANI","KOL","GOOD_SUPPLIER"]} />,
+          //   path: "settings",
+          //   element: (
+          //     <RequireAuth allowedRoles={["KAVANI", "KOL", "GOOD_SUPPLIER"]} />
+          //   ), //add all allowed roles
           //   children: [
           //     {
           //       index: true,
-          //       // element: <ProjectsPage />,
+          //       element: <SettingPage />,
           //     },
           //   ],
           // },
-          {
-            path: "settings",
-            element: (
-              <RequireAuth allowedRoles={["KAVANI", "KOL", "GOOD_SUPPLIER"]} />
-            ), //add all allowed roles
-            children: [
-              {
-                index: true,
-                element: <SettingPage />,
-              },
-            ],
-          },
         ],
       },
     ],
@@ -126,10 +115,10 @@ const router = createBrowserRouter([
     path: "success-payment",
     element: <PaymentSuccess />,
   },
-  {
-    path: "test",
-    element: <Test />,
-  },
+  // {
+  //   path: "test",
+  //   element: <Test />,
+  // },
   {
     path: "*",
     element: <NotFoundPage />,

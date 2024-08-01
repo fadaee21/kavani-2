@@ -67,7 +67,6 @@ const NewService = () => {
         <p className="text-lg font-semibold">ثبت سرویس جدید</p>
         <ReturnButton />
       </div>
-
       <form onSubmit={handleSubmit}>
         <div className="flex flex-col justify-start items-start w-full space-y-5 my-10">
           <TextField
