@@ -1,7 +1,7 @@
 import CheckboxOne from "@/components/ui-kit/CheckBox";
 import { LoadingSpinnerButton } from "@/components/ui-kit/LoadingSpinner";
 import { useAuth } from "@/hooks/context/useAuth";
-import useLogin from "@/hooks/useLogin";
+// import useLogin from "@/hooks/useLogin";
 import { useEffect, useRef, useState } from "react";
 import backgroundImage from "@/assets/images/flat-wall-concrete-with-black-hole-middle.png";
 import backgroundImageMobile from "@/assets/images/flat-wall-concrete-with-black-hole-middle-mobile.png";
@@ -10,6 +10,8 @@ import ListBoxSelect from "@/components/ui-kit/ListBoxSelect";
 import { LOGIN_ROLE } from "@/const/loginRole";
 import { TextField } from "@/components/ui-kit/TextField";
 import { PrimaryButtons } from "@/components/ui-kit/buttons/PrimaryButtons";
+import useLogin from "@/hooks/useLogin";
+import { ToastContainer } from "react-toastify";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -23,7 +25,7 @@ export default function LoginPage() {
 
   useEffect(() => userRef.current?.focus(), []);
 
-  const { errRes, handleSubmit, loading } = useLogin({
+  const { handleSubmit, loading } = useLogin({
     ...loginInfo,
     role: selectedRole?.value,
   });
@@ -98,20 +100,7 @@ export default function LoginPage() {
               ورود به حساب کاربری
             </h2>
           </div>
-          <div className="w-full max-w-sm mx-auto">
-            {renderForm()}
-            {errRes && errRes.length > 0 ? (
-              <ul className="p-2 mt-4 text-xs font-medium list-disc list-inside rounded-lg shadow-sm max-h-16 bg-rose-50 dark:bg-rose-950">
-                {errRes.map((error, index) => (
-                  <li className="text-rose-950 dark:text-rose-50" key={index}>
-                    {error}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <div className="w-full h-10 mt-1" />
-            )}
-          </div>
+          <div className="w-full max-w-sm mx-auto">{renderForm()}</div>
         </div>
       </div>
 
@@ -126,6 +115,12 @@ export default function LoginPage() {
           <img src={kavaniLogo} alt="kavani logo" />
         </div>
       </div>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={2500}
+        rtl
+        className={"sm:w-96 w-full "}
+      />
     </>
   );
 }

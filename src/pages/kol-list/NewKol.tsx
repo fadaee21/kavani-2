@@ -16,6 +16,8 @@ import axiosPrivate from "@/services/axios";
 import useSWRMutation from "swr/mutation";
 import router from "@/routes";
 import { toast } from "react-toastify";
+import { AddKolRequestSchema } from "@/validator/AddKolRequestSchema";
+import handleError from "@/validator/showError";
 interface IKole {
   name: string;
   officialName: string;
@@ -41,17 +43,17 @@ const NewKol = () => {
     });
   };
 
-  const registerNewPerson = async () => {
-    console.log({ kol });
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
-      const res = await trigger(kol);
-      // console.log({ res });
+      const validateKol = AddKolRequestSchema.parse(kol);
+      const res = await trigger(validateKol);
       if (res.is_successful) {
         router.navigate("/kvn/kol-list");
         toast.success("سرویس دهنده با موفقیت ثبت شد");
       }
     } catch (err) {
-      console.error(err);
+      handleError(err);
     }
   };
   const disableButton = Object.values(kol).some((value) => value === "");
@@ -62,36 +64,38 @@ const NewKol = () => {
         <ReturnButton />
       </div>
 
-      <div className="flex flex-col justify-start items-start w-full space-y-5 my-10">
-        <TextField
-          id="name"
-          placeholder="نام"
-          onChange={handleChange}
-          state={kol.name}
-          inputClass="w-full"
-        />
-        <TextField
-          id="officialName"
-          placeholder="نام رسمی"
-          onChange={handleChange}
-          state={kol.officialName}
-          inputClass="w-full"
-        />
-        <TextField
-          id="address"
-          placeholder="آدرس"
-          onChange={handleChange}
-          state={kol.address}
-        />
-      </div>
+      <form onSubmit={handleSubmit}>
+        <div className="flex flex-col justify-start items-start w-full space-y-5 my-10">
+          <TextField
+            id="name"
+            placeholder="نام"
+            onChange={handleChange}
+            state={kol.name}
+            inputClass="w-full"
+          />
+          <TextField
+            id="officialName"
+            placeholder="نام رسمی"
+            onChange={handleChange}
+            state={kol.officialName}
+            inputClass="w-full"
+          />
+          <TextField
+            id="address"
+            placeholder="آدرس"
+            onChange={handleChange}
+            state={kol.address}
+          />
+        </div>
 
-      <PrimaryButtons
-        onClick={registerNewPerson}
-        className="w-full rounded-3xl "
-        disabled={disableButton || isMutating}
-      >
-        {isMutating ? <LoadingSpinnerButton /> : "ثبت سرویس دهنده"}
-      </PrimaryButtons>
+        <PrimaryButtons
+          type="submit"
+          className="w-full rounded-3xl "
+          disabled={disableButton || isMutating}
+        >
+          {isMutating ? <LoadingSpinnerButton /> : "ثبت سرویس دهنده"}
+        </PrimaryButtons>
+      </form>
     </div>
   );
 };

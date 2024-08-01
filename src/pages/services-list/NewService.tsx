@@ -9,24 +9,25 @@ import useSWR from "swr";
 import ListBoxSelect from "@/components/ui-kit/ListBoxSelect";
 import { toast } from "react-toastify";
 import router from "@/routes";
+import handleError from "@/validator/showError";
+import { AddKavaniServiceRequestSchema } from "@/validator/addKavaniService";
 
-interface IService {
-  kolId: string;
+interface IServicePost {
   name: string;
   servicePrice: string;
   discount: string;
   kavaniPercentage: string;
   prepayment: string;
+  kolId: number;
 }
-const fetcherPost = (url: string, { arg }: { arg: IService }) =>
+const fetcherPost = (url: string, { arg }: { arg: IServicePost }) =>
   axiosPrivate.post(url, arg).then((res) => res.data);
 
 const NewService = () => {
   const { trigger, isMutating } = useSWRMutation(`/service/add`, fetcherPost);
   const { data } = useSWR<ResponseData<IKolGetAll>>(`/kol/get/all/0/100`);
   const [selected, setSelected] = useState<SelectedOption | null>(null);
-  const [service, setService] = useState<IService>({
-    kolId: "",
+  const [service, setService] = useState({
     name: "",
     servicePrice: "",
     discount: "",
@@ -42,16 +43,21 @@ const NewService = () => {
     });
   };
 
-  const registerNewPerson = async () => {
-    console.log({ service });
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
-      const res = await trigger(service);
+      const validateService = AddKavaniServiceRequestSchema.parse(service);
+      const res = await trigger({
+        ...validateService,
+        kolId: Number(selected?.value) || 0,
+      });
       if (res.is_successful) {
         router.navigate("/kvn/services-list");
         toast.success("سرویس  با موفقیت ثبت شد");
       }
     } catch (err) {
-      console.error(err);
+      // console.log(err)
+      handleError(err);
     }
   };
   const disableButton = Object.values(service).some((value) => value === "");
@@ -62,66 +68,67 @@ const NewService = () => {
         <ReturnButton />
       </div>
 
-      <div className="flex flex-col justify-start items-start w-full space-y-5 my-10">
-        <TextField
-          id="name"
-          placeholder="نام سرویس"
-          onChange={handleChange}
-          state={service.name}
-          inputClass="w-full"
-        />
-        {data ? (
-          <ListBoxSelect
-            items={data.body.content.map((kol) => ({
-              label: kol.name,
-              value: kol.id.toString(),
-            }))}
-            selected={selected}
-            setSelected={setSelected}
-            disabled={false}
-            placeholder="سرویس دهنده"
+      <form onSubmit={handleSubmit}>
+        <div className="flex flex-col justify-start items-start w-full space-y-5 my-10">
+          <TextField
+            id="name"
+            placeholder="نام سرویس"
+            onChange={handleChange}
+            state={service.name}
+            inputClass="w-full"
           />
-        ) : (
-          <ListBoxSelect
-            items={[]}
-            selected={selected}
-            setSelected={setSelected}
-            placeholder={"سرویس دهنده"}
+          {data ? (
+            <ListBoxSelect
+              items={data.body.content.map((kol) => ({
+                label: kol.name,
+                value: kol.id.toString(),
+              }))}
+              selected={selected}
+              setSelected={setSelected}
+              disabled={false}
+              placeholder="سرویس دهنده"
+            />
+          ) : (
+            <ListBoxSelect
+              items={[]}
+              selected={selected}
+              setSelected={setSelected}
+              placeholder={"سرویس دهنده"}
+            />
+          )}
+          <TextField
+            id="servicePrice"
+            placeholder="قیمت سرویس"
+            onChange={handleChange}
+            state={service.servicePrice}
           />
-        )}
-        <TextField
-          id="servicePrice"
-          placeholder="قیمت سرویس"
-          onChange={handleChange}
-          state={service.servicePrice}
-        />
-        <TextField
-          id="discount"
-          placeholder="درصد تخفیف"
-          onChange={handleChange}
-          state={service.discount}
-        />
-        <TextField
-          id="kavaniPercentage"
-          placeholder="درصد کاوانی"
-          onChange={handleChange}
-          state={service.kavaniPercentage}
-        />
-        <TextField
-          id="prepayment"
-          placeholder="میزان پیش پرداخت"
-          onChange={handleChange}
-          state={service.prepayment}
-        />
-      </div>
-
-      <PrimaryButtons
-        onClick={registerNewPerson}
-        className="w-full rounded-3xl "
-        disabled={disableButton || isMutating}
-      >
-        {isMutating ? <LoadingSpinnerButton /> : "ثبت سرویس"}
-      </PrimaryButtons>
+          <TextField
+            id="discount"
+            placeholder="درصد تخفیف"
+            onChange={handleChange}
+            state={service.discount}
+          />
+          <TextField
+            id="kavaniPercentage"
+            placeholder="درصد کاوانی"
+            onChange={handleChange}
+            state={service.kavaniPercentage}
+          />
+          <TextField
+            id="prepayment"
+            placeholder="میزان پیش پرداخت"
+            onChange={handleChange}
+            state={service.prepayment}
+          />
+        </div>
+        <PrimaryButtons
+          type="submit"
+          className="w-full rounded-3xl "
+          disabled={disableButton || isMutating}
+        >
+          {isMutating ? <LoadingSpinnerButton /> : "ثبت سرویس"}
+        </PrimaryButtons>
+      </form>
     </div>
   );
 };

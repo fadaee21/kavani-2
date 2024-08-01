@@ -12,8 +12,17 @@ import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import handleError from "@/validator/showError";
 
-const fetcherPost = (url: string, { arg }: { arg: any }) =>
-  axiosPrivate.post(url, arg).then((res) => res.data);
+interface IPostData {
+  name: string;
+  lastName: string;
+  mobile: string;
+  callBackUrl: string;
+}
+
+const fetcherPost = (
+  url: string,
+  { arg }: { arg: IPostData & { serviceName: string } }
+) => axiosPrivate.post(url, arg).then((res) => res.data);
 
 const NewRegister = () => {
   const { data } = useSWR<ResponseData<IServiceAll>>(`/service/get/all/0/100`);
@@ -21,8 +30,7 @@ const NewRegister = () => {
   const origin = typeof window !== "undefined" && window.location.origin;
   const callBackUrl = `${origin}/success-payment`;
   const [selected, setSelected] = useState<SelectedOption | null>(null);
-  // const [loading, setLoading] = useState(false);
-  const [personPayment, setPersonPayment] = useState({
+  const [personPayment, setPersonPayment] = useState<IPostData>({
     name: "",
     lastName: "",
     mobile: "",
@@ -41,15 +49,16 @@ const NewRegister = () => {
     fetcherPost
   );
 
-  const registerNewPerson = async () => {
+  const registerNewPerson = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
       const validatedData = personPaymentSchema.parse(personPayment);
       const res = await trigger({
         ...validatedData,
-        serviceName: selected?.label, //TODO:it must change to service id
+        serviceName: selected?.label || "", //TODO:it must change to service id for now backend take label
       });
       if (res.is_successful) {
-        router.navigate("/kvn/services-list");
+        router.navigate("/kvn/registered-account");
         toast.success("سرویس  با موفقیت ثبت شد");
       }
     } catch (error) {
@@ -57,42 +66,6 @@ const NewRegister = () => {
     }
   };
 
-  // const registerNewPerson = async () => {
-  //   // TODO:change this with useSWRMutation
-  //   console.log({ personPayment });
-  //   try {
-  //     setLoading(true);
-  //     const validatedData = personPaymentSchema.parse(personPayment);
-
-  //     const res = await axiosPrivate.post("/panel/accounts/add", {
-  //       ...validatedData,
-  //       serviceName: selected?.label, //TODO:it must change to service id
-  //     });
-  //     if (res.status === 200) {
-  //       // mutate(`/panel/banner/get/all/0/100`);
-  //       toast.success("پیامک به زودی برای کاربر ارسال میشود");
-  //       router.navigate("/kvn/registered-account");
-  //     } else {
-  //       toast.error("مشکلی پیش آمد، دوباره تلاش کنید");
-  //     }
-  //     // console.log(res.data);
-  //   } catch (error) {
-  //     console.log({ error });
-  //     const err = alertErr(error);
-  //     toast.error(err?.[0]);
-  //     console.log({ err });
-  //     if (axios.isAxiosError(error)) {
-  //       const { code } = error.response?.data.body || {};
-  //       if (code === "10") {
-  //         toast.error("کاربری با این مشخصات وجود دارد");
-  //         return;
-  //       }
-  //       toast.error("مشکلی پیش آمد، دوباره تلاش کنید");
-  //     }
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
   const disableButton =
     Object.values(personPayment).some((value) => value === "") || !selected;
   return (
@@ -101,63 +74,57 @@ const NewRegister = () => {
         <p className="text-lg font-semibold">ثبت نام</p>
         <ReturnButton />
       </div>
-
-      <div className="flex flex-col justify-start items-start w-full space-y-5 my-10">
-        <TextField
-          id="name"
-          placeholder="نام"
-          onChange={handleChange}
-          state={personPayment.name}
-          inputClass="w-full"
-        />
-        <TextField
-          id="lastName"
-          placeholder="نام خانوادگی"
-          onChange={handleChange}
-          state={personPayment.lastName}
-          inputClass="w-full"
-        />
-        <TextField
-          id="mobile"
-          placeholder="موبایل"
-          onChange={handleChange}
-          state={personPayment.mobile}
-        />
-        {/* <ListBoxSelect
-          items={data}
-          selected={selected}
-          setSelected={setSelected}
-          placeholder="انتخاب نوع فعالیت"
-          className="w-full"
-        /> */}
-        {data ? (
-          <ListBoxSelect
-            items={data.body.content.map((service) => ({
-              label: service.name,
-              value: service.serviceId.toString(),
-            }))}
-            selected={selected}
-            setSelected={setSelected}
-            disabled={false}
-            placeholder="انتخاب نوع فعالیت"
+      <form onSubmit={registerNewPerson}>
+        <div className="flex flex-col justify-start items-start w-full space-y-5 my-10">
+          <TextField
+            id="name"
+            placeholder="نام"
+            onChange={handleChange}
+            state={personPayment.name}
+            inputClass="w-full"
           />
-        ) : (
-          <ListBoxSelect
-            items={[]}
-            selected={selected}
-            setSelected={setSelected}
-            placeholder={"انتخاب نوع فعالیت"}
+          <TextField
+            id="lastName"
+            placeholder="نام خانوادگی"
+            onChange={handleChange}
+            state={personPayment.lastName}
+            inputClass="w-full"
           />
-        )}
-      </div>
+          <TextField
+            id="mobile"
+            placeholder="موبایل"
+            onChange={handleChange}
+            state={personPayment.mobile}
+          />
+          {data ? (
+            <ListBoxSelect
+              items={data.body.content.map((service) => ({
+                label: service.name,
+                value: service.serviceId.toString(),
+              }))}
+              selected={selected}
+              setSelected={setSelected}
+              disabled={false}
+              placeholder="انتخاب نوع فعالیت"
+            />
+          ) : (
+            <ListBoxSelect
+              items={[]}
+              selected={selected}
+              setSelected={setSelected}
+              placeholder={"انتخاب نوع فعالیت"}
+            />
+          )}
+        </div>
 
-      <PrimaryButtons
-        onClick={registerNewPerson}
-        className="w-full rounded-3xl "
-        disabled={disableButton || isMutating}
-      >
-        {isMutating ? <LoadingSpinnerButton /> : "ثبت نام"}
-      </PrimaryButtons>
+        <PrimaryButtons
+          type="submit"
+          className="w-full rounded-3xl "
+          disabled={disableButton || isMutating}
+        >
+          {isMutating ? <LoadingSpinnerButton /> : "ثبت نام"}
+        </PrimaryButtons>
+      </form>
     </div>
   );
 };

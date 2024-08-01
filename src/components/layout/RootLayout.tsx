@@ -16,3 +16,4 @@ function RootLayout() {
 }
 
 export default RootLayout;
+// NOTE: The ToastContainer component is used in the Login page as well. If you change the style here, you should also modify it there.
