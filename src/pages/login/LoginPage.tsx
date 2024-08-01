@@ -119,7 +119,7 @@ export default function LoginPage() {
         className="md:hidden items-center justify-start min-h-screen bg-no-repeat bg-contain bg-bottom bg-[#27282B] relative flex flex-col"
         style={{ backgroundImage: `url(${backgroundImageMobile})` }}
       >
-        <div className="w-11/12 max-w-96 flex-col justify-center items-start gap-9 mt-10 inline-flex">
+        <div className="w-11/12 max-w-96 flex-col justify-center items-start gap-9 mt-16 inline-flex">
           {renderForm()}
         </div>
         <div className="transform scale-50 absolute left-1/2  -translate-x-1/2 translate-y-14 bottom-0  ">

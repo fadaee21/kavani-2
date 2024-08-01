@@ -45,7 +45,7 @@ const NewKol = () => {
     console.log({ kol });
     try {
       const res = await trigger(kol);
-      console.log({ res });
+      // console.log({ res });
       if (res.is_successful) {
         router.navigate("/kvn/kol-list");
         toast.success("سرویس دهنده با موفقیت ثبت شد");

@@ -1,23 +1,27 @@
 import { useState } from "react";
-// import { mutate } from "swr";
 import axiosPrivate from "@/services/axios";
 import { toast } from "react-toastify";
 import router from "@/routes";
-import axios from "axios";
-import { ACTIVITIES_FIELD } from "@/const/registerNewUser";
 import { personPaymentSchema } from "@/validator/personPaymentSchema";
-import alertErr from "@/validator/showError";
 import { TextField } from "@/components/ui-kit/TextField";
 import ListBoxSelect from "@/components/ui-kit/ListBoxSelect";
 import { PrimaryButtons } from "@/components/ui-kit/buttons/PrimaryButtons";
 import ReturnButton from "@/components/ui-kit/buttons/ReturnButton";
 import { LoadingSpinnerButton } from "@/components/ui-kit/LoadingSpinner";
+import useSWR from "swr";
+import useSWRMutation from "swr/mutation";
+import handleError from "@/validator/showError";
+
+const fetcherPost = (url: string, { arg }: { arg: any }) =>
+  axiosPrivate.post(url, arg).then((res) => res.data);
 
 const NewRegister = () => {
+  const { data } = useSWR<ResponseData<IServiceAll>>(`/service/get/all/0/100`);
+
   const origin = typeof window !== "undefined" && window.location.origin;
   const callBackUrl = `${origin}/success-payment`;
   const [selected, setSelected] = useState<SelectedOption | null>(null);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [personPayment, setPersonPayment] = useState({
     name: "",
     lastName: "",
@@ -32,38 +36,63 @@ const NewRegister = () => {
     });
   };
 
+  const { trigger, isMutating } = useSWRMutation(
+    `/panel/accounts/add`,
+    fetcherPost
+  );
+
   const registerNewPerson = async () => {
     try {
-      setLoading(true);
       const validatedData = personPaymentSchema.parse(personPayment);
-      const res = await axiosPrivate.post("/panel/accounts/add", {
+      const res = await trigger({
         ...validatedData,
-        accountActivityType: selected?.value,
+        serviceName: selected?.label, //TODO:it must change to service id
       });
-      if (res.status === 200) {
-        // mutate(`/panel/banner/get/all/0/100`);
-        toast.success("پیامک به زودی برای کاربر ارسال میشود");
-        router.navigate("/kvn/registered-account");
-      } else {
-        toast.error("مشکلی پیش آمد، دوباره تلاش کنید");
+      if (res.is_successful) {
+        router.navigate("/kvn/services-list");
+        toast.success("سرویس  با موفقیت ثبت شد");
       }
-      // console.log(res.data);
     } catch (error) {
-      const err = alertErr(error);
-      console.log({ err });
-      toast.error(err?.[0]);
-      if (axios.isAxiosError(error)) {
-        const { code } = error.response?.data.body || {};
-        if (code === "10") {
-          toast.error("کاربری با این مشخصات وجود دارد");
-          return;
-        }
-        toast.error("مشکلی پیش آمد، دوباره تلاش کنید");
-      }
-    } finally {
-      setLoading(false);
+      handleError(error);
     }
   };
+
+  // const registerNewPerson = async () => {
+  //   // TODO:change this with useSWRMutation
+  //   console.log({ personPayment });
+  //   try {
+  //     setLoading(true);
+  //     const validatedData = personPaymentSchema.parse(personPayment);
+
+  //     const res = await axiosPrivate.post("/panel/accounts/add", {
+  //       ...validatedData,
+  //       serviceName: selected?.label, //TODO:it must change to service id
+  //     });
+  //     if (res.status === 200) {
+  //       // mutate(`/panel/banner/get/all/0/100`);
+  //       toast.success("پیامک به زودی برای کاربر ارسال میشود");
+  //       router.navigate("/kvn/registered-account");
+  //     } else {
+  //       toast.error("مشکلی پیش آمد، دوباره تلاش کنید");
+  //     }
+  //     // console.log(res.data);
+  //   } catch (error) {
+  //     console.log({ error });
+  //     const err = alertErr(error);
+  //     toast.error(err?.[0]);
+  //     console.log({ err });
+  //     if (axios.isAxiosError(error)) {
+  //       const { code } = error.response?.data.body || {};
+  //       if (code === "10") {
+  //         toast.error("کاربری با این مشخصات وجود دارد");
+  //         return;
+  //       }
+  //       toast.error("مشکلی پیش آمد، دوباره تلاش کنید");
+  //     }
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
   const disableButton =
     Object.values(personPayment).some((value) => value === "") || !selected;
   return (
@@ -94,21 +123,40 @@ const NewRegister = () => {
           onChange={handleChange}
           state={personPayment.mobile}
         />
-        <ListBoxSelect
-          items={ACTIVITIES_FIELD}
+        {/* <ListBoxSelect
+          items={data}
           selected={selected}
           setSelected={setSelected}
           placeholder="انتخاب نوع فعالیت"
           className="w-full"
-        />
+        /> */}
+        {data ? (
+          <ListBoxSelect
+            items={data.body.content.map((service) => ({
+              label: service.name,
+              value: service.serviceId.toString(),
+            }))}
+            selected={selected}
+            setSelected={setSelected}
+            disabled={false}
+            placeholder="انتخاب نوع فعالیت"
+          />
+        ) : (
+          <ListBoxSelect
+            items={[]}
+            selected={selected}
+            setSelected={setSelected}
+            placeholder={"انتخاب نوع فعالیت"}
+          />
+        )}
       </div>
 
       <PrimaryButtons
         onClick={registerNewPerson}
         className="w-full rounded-3xl "
-        disabled={disableButton || loading}
+        disabled={disableButton || isMutating}
       >
-        {loading ? <LoadingSpinnerButton /> : "ثبت نام"}
+        {isMutating ? <LoadingSpinnerButton /> : "ثبت نام"}
       </PrimaryButtons>
     </div>
   );

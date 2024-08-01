@@ -4,14 +4,12 @@ import Pagination from "@/components/ui-kit/Pagination";
 import router from "@/routes";
 import { useState } from "react";
 import useSWR from "swr";
-import { fetcherPost } from "@/services/axios";
 const PAGE_SIZE = 20;
 
 const ServicesList = () => {
   const [page, setPage] = useState(1);
-  const { data, isLoading } = useSWR(
-    `/service/search/${page - 1}/${PAGE_SIZE}`,
-    fetcherPost
+  const { data, isLoading } = useSWR<ResponseData<IServiceAll>>(
+    `/service/get/all/${page - 1}/${PAGE_SIZE}`
   );
 
   const totalElements = data?.body.totalElements || 0;
@@ -32,6 +30,7 @@ const ServicesList = () => {
           isLoading={isLoading}
           totalElements={totalElements}
           emptyText="هیچ سرویسی یافت نشد"
+          primaryKey="serviceId"
         />
       </div>
       <Pagination
@@ -47,10 +46,10 @@ const ServicesList = () => {
 export default ServicesList;
 
 const headers = [
-  { key: "", label: "kol" },
-  { key: "", label: "نام سرویس" },
-  { key: "", label: "قیمت سرویس" },
-  { key: "", label: "درصد تخفیف" },
-  { key: "", label: "درصد کاوانی" },
-  { key: "", label: "میزان پیش پرداخت" },
+  { key: "kolName", label: "سرویس دهنده" },
+  { key: "name", label: "نام سرویس" },
+  { key: "servicePrice", label: "قیمت سرویس" },
+  { key: "discount", label: "درصد تخفیف" },
+  { key: "kavaniPercentage", label: "درصد کاوانی" },
+  { key: "prepayment", label: "میزان پیش پرداخت" },
 ];

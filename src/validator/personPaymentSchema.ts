@@ -10,13 +10,13 @@ export const personPaymentSchema = z.object({
       message: "شماره موبایل نامعتبر است",
       path: ["mobile"],
     }),
-  amount: z
-    .string()
-    .min(1, "مبلغ الزامی است")
-    .refine((value) => !isNaN(Number(value)), {
-      message: "مبلغ نامعتبر است",
-      path: ["amount"],
-    }),
-  companyName: z.string().min(1, "نام شرکت الزامی است"),
+  // amount: z
+  //   .string()
+  //   .min(1, "مبلغ الزامی است")
+  //   .refine((value) => !isNaN(Number(value)), {
+  //     message: "مبلغ نامعتبر است",
+  //     path: ["amount"],
+  //   }),
+  // companyName: z.string().min(1, "نام شرکت الزامی است"),
   callBackUrl: z.string().url({ message: "URL نامعتبر است" }),
 });
