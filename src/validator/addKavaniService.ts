@@ -6,8 +6,8 @@ export const AddKavaniServiceRequestSchema = z.object({
   servicePrice: z
     .string()
     .refine(
-      (value) => !isNaN(Number(value)) && Number(value) >= 0,
-      "قیمت سرویس باید یک عدد غیرمنفی باشد"
+      (value) => !isNaN(Number(value)) && Number(value) >= 1000,
+      "قیمت سرویس باید بیشتر از 1000 باشد"
     ),
   discount: z
     .string()

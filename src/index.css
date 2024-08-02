@@ -12,3 +12,7 @@
 .ltr {
   direction: ltr;
 }
+
+body {
+  @apply bg-zinc-700;
+}
