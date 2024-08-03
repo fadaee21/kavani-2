@@ -34,7 +34,7 @@ export const TextField = forwardRef<HTMLInputElement, IProps>(
       labelClass
     );
     const inputClasses = clsx(
-      "w-full h-12 md:h-16 rounded-3xl border-0 py-1.5 block shadow-sm ring-inset placeholder-gray-400 text-gray-50 text-lg leading-6 pl-10 bg-[#FFFFFF1A]  ring-gray-300 ring-gray-600 focus:ring-0 ",
+      "w-full h-12 md:h-16 rounded-3xl border-0 py-1.5 block shadow-sm ring-inset placeholder-gray-400 text-gray-50 text-md leading-6 pl-10 bg-[#FFFFFF1A]  ring-gray-300 ring-gray-600 focus:ring-0 ",
       inputClass
     );
 

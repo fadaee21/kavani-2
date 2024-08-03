@@ -24,7 +24,7 @@ const ServicesList = () => {
     isMutating,
     data: searchData,
   } = useSWRMutation(
-    `/panel/accounts/search/${page - 1}/${PAGE_SIZE}`,
+    `/service/search/${page - 1}/${PAGE_SIZE}`,
     fetcherPost
   );
 

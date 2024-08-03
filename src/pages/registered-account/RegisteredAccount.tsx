@@ -11,11 +11,12 @@ import useSWRMutation from "swr/mutation";
 import MagnifyingGlass from "@/assets/icons/magnifying-glass.svg?react";
 import { TextField } from "@/components/ui-kit/TextField";
 import ListBoxSelect from "@/components/ui-kit/ListBoxSelect";
+import { useAuth } from "@/hooks/context/useAuth";
 
 const PAGE_SIZE = 20;
 const fetcherPost = (
   url: string,
-  { arg }: { arg: { name: string; status: string | undefined } }
+  { arg }: { arg: { name: string | undefined; status: string | undefined } }
 ) => axiosPrivate.post(url, arg).then((res) => res.data);
 
 // const transformStatus = (data: { status: string }[]) => {
@@ -32,10 +33,15 @@ const transformStatus = (data: { status: string }[]) => {
       item.status === "REGISTERED" ? "ثبت نام موفق" : "ثبت نام ناموفق"
     );
   });
-  return data.map((item) => ({ ...item, status: transformedData.get(item.status) || "" }));
+  return data.map((item) => ({
+    ...item,
+    status: transformedData.get(item.status) || "",
+  }));
 };
 
 const RegisteredAccount = () => {
+  const { auth } = useAuth();
+  console.log({ auth });
   const [page, setPage] = useState(1);
   const [selectedSearch, setSelectedSearch] = useState<SelectedOption | null>(
     null
@@ -48,13 +54,16 @@ const RegisteredAccount = () => {
     trigger,
     isMutating,
     data: searchData,
-  } = useSWRMutation(`/kol/search/${page - 1}/${PAGE_SIZE}`, fetcherPost);
+  } = useSWRMutation(
+    `/panel/accounts/search/${page - 1}/${PAGE_SIZE}`,
+    fetcherPost
+  );
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await trigger({
-        name: search.name,
+        name: search.name.length >= 1 ? search.name : undefined,
         status: selectedSearch?.value ? selectedSearch.value : undefined,
       });
     } catch (err) {
@@ -71,7 +80,7 @@ const RegisteredAccount = () => {
   };
 
   const { data, isLoading } = useSWR(
-    `/panel/accounts/get/registered/${page - 1}/${PAGE_SIZE}`
+    `/panel/accounts/get/all/${page - 1}/${PAGE_SIZE}`
   );
 
   const totalElements = searchData
@@ -116,12 +125,14 @@ const RegisteredAccount = () => {
             </PrimaryButtons>
           </div>
         </form>
-        <PrimaryButtons
-          className="rounded-xl"
-          onClick={() => router.navigate("new")}
-        >
-          ثبت جدید
-        </PrimaryButtons>
+        {auth?.roles === "KAVANI" && (
+          <PrimaryButtons
+            className="rounded-xl"
+            onClick={() => router.navigate("new")}
+          >
+            ثبت جدید
+          </PrimaryButtons>
+        )}
       </div>
       <div className="flex flex-col w-full">
         <TableContent
