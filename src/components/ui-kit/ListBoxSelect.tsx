@@ -73,7 +73,7 @@ export default function ListBoxSelect({
               disabled && "opacity-50 cursor-not-allowed"
             )}
           >
-            <span className="flex items-center text-lg leading-6">
+            <span className="flex items-center text-md leading-6">
               {selected?.label ? (
                 <span
                   className={clsx(

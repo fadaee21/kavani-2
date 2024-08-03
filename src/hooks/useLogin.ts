@@ -40,7 +40,7 @@ const useLogin = ({ password: pwd, username: user, role }: TLoginInfo) => {
         const accessToken = response.body.access_token;
         const refreshToken = response.body.refresh_token;
         const userInfo = jwtDecode<MyJwtPayload>(accessToken);
-        console.log({ accessToken, refreshToken });
+        // console.log({ accessToken, refreshToken });
         Cookies.set("refreshToken", refreshToken, {
           path: "/",
           expires: 0.5,

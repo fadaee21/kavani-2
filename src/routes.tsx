@@ -53,10 +53,6 @@ const router = createBrowserRouter([
                 path: "registered-account",
                 children: [
                   {
-                    index: true,
-                    element: <RegisteredAccount />,
-                  },
-                  {
                     path: "new",
                     element: <NewRegister />,
                   },

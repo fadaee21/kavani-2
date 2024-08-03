@@ -28,7 +28,8 @@ const ServicesList = () => {
     fetcherPost
   );
 
-  const handleSearch = async () => {
+  const handleSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
       await trigger(search);
     } catch (err) {
@@ -54,18 +55,27 @@ const ServicesList = () => {
   return (
     <div className="w-full">
       <div className="flex justify-end flex-col-reverse gap-5 md:gap-0 md:flex-row items-end md:items-center md:justify-between">
-        <div className="md:w-1/3 w-full">
-          <TextField
-            placeholder="جستجو"
-            state={search.name}
-            onChange={handleChange}
-            name="name"
-            id="name"
-            className="ml-5"
-            icon={isMutating ? <LoadingSpinnerButton /> : <MagnifyingGlass />}
-            onClick={handleSearch}
-          />
-        </div>
+        <form className="md:w-1/2 w-full" onSubmit={handleSearch}>
+          <div className="md:flex justify-start items-center  space-x-2  transform md:scale-75 origin-right">
+            <TextField
+              placeholder="نام"
+              state={search.name}
+              onChange={handleChange}
+              name="name"
+              id="name"
+              className="ml-5"
+            />
+            <PrimaryButtons className="rounded-xl" type="submit">
+              {isMutating ? (
+                <div className="p-1">
+                  <LoadingSpinnerButton />
+                </div>
+              ) : (
+                <MagnifyingGlass className="w-8 h-8" />
+              )}
+            </PrimaryButtons>
+          </div>
+        </form>
         <PrimaryButtons
           className="rounded-xl"
           onClick={() => router.navigate("new")}
@@ -100,8 +110,8 @@ const ServicesList = () => {
 export default ServicesList;
 
 const headers = [
-  { key: "kolName", label: "سرویس دهنده" },
   { key: "name", label: "نام سرویس" },
+  { key: "kolName", label: "سرویس دهنده" },
   { key: "servicePrice", label: "قیمت سرویس" },
   { key: "discount", label: "درصد تخفیف" },
   { key: "kavaniPercentage", label: "درصد کاوانی" },

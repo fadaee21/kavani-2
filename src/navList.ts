@@ -5,8 +5,8 @@ import Team from "@/assets/icons/team.svg?react";
 const kavaniRoutes = [
   {
     id: "1a",
-    name: "لیست ثبت نام ها",
-    href: "/kvn/registered-account",
+    name: "لیست سرویس دهندگان",
+    href: "/kvn/kol-list",
     icon: Team,
     role: "KAVANI",
   },
@@ -19,8 +19,8 @@ const kavaniRoutes = [
   },
   {
     id: "3a",
-    name: "لیست سرویس دهندگان",
-    href: "/kvn/kol-list",
+    name: "لیست ثبت نام ها",
+    href: "/kvn/registered-account",
     icon: Team,
     role: "KAVANI",
   },
