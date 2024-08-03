@@ -66,7 +66,7 @@ export default function LoginPage() {
           setSelected={setSelectedRole}
           label=""
           placeholder="نوع کاربری"
-          className="w-full my-5"
+          className="w-full my-5 text-sm"
         />
       </div>
 
