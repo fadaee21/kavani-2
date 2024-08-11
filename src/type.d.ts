@@ -138,6 +138,30 @@ interface IServiceAll {
   prepayment: number;
 }
 
+interface IStatusGoodSupplier{
+  supplyCountInKavani: number
+  bestSoldSupplyName: string
+  soldCount: number
+  position: number
+}
+interface IBestSelling{
+    code: string
+    name: string
+    remainQuantity: number
+    sold: number
+    total: number
+}
+
+interface INotSold{
+  code: string
+  name: string
+  remainingQuantity: number
+}
+interface IDiversity {
+  name: string
+  total: number
+}
+
 /*=========================================
                                             
               packages

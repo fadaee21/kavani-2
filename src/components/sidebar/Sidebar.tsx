@@ -18,11 +18,7 @@ function Sidebar({ children }: TChildren) {
   const sidebarContent = (
     <aside className="fixed top-0 bottom-0 z-10 flex flex-col h-screen px-6 pb-4 bg-[#27282B] w-72 shrink-0">
       <div className="flex items-center justify-between h-16">
-        <img
-          src={logoOrange}
-          alt="kavani logo"
-          className="h-24 mt-4"
-        />
+        <img src={logoOrange} alt="kavani logo" className="h-24 mt-4" />
         <button
           type="button"
           className="outline-none"
@@ -75,6 +71,19 @@ function Sidebar({ children }: TChildren) {
             className="w-5 h-5 ml-auto cursor-pointer md:hidden"
             onClick={() => setOpen(!open)}
           />
+
+          {auth?.roles === "KAVANI" ? (
+            <p className="text-sm font-medium ml-auto">
+             به پنل کاربری کاوانی خوش آمدید
+            </p>
+          ) : (
+            <p className="text-sm font-medium ml-auto">
+              کاربر
+              {auth?.name} {/* TODO: add user name */}
+              به پنل کاربری کاوانی خوش آمدید
+            </p>
+          )}
+
           <Bell
             className="w-5 h-5 cursor-pointer"
             onClick={() => console.log("bell")}
@@ -89,9 +98,7 @@ function Sidebar({ children }: TChildren) {
           style={{ minHeight: "calc(100vh - 4rem)" }}
         >
           <main className="container py-10 mx-auto">
-            <div className="px-8 text-gray-50">
-              {children}
-            </div>
+            <div className="px-8 text-gray-50">{children}</div>
           </main>
         </div>
       </div>

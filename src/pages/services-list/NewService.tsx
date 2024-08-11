@@ -20,6 +20,7 @@ interface IServicePost {
   prepayment: string;
   kolId: number;
 }
+
 const fetcherPost = (url: string, { arg }: { arg: IServicePost }) =>
   axiosPrivate.post(url, arg).then((res) => res.data);
 
@@ -35,18 +36,35 @@ const NewService = () => {
     prepayment: "",
   });
 
+  const formatPrice = (value: string) => {
+    // Remove any non-digit characters (commas, etc.)
+    const cleanedValue = value.replace(/\D/g, "");
+
+    // Add commas every three digits
+    return cleanedValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
+
+    // If the field is servicePrice, format it with commas
+    const formattedValue =
+      name === "servicePrice" ? formatPrice(value) : value;
+
     setService({
       ...service,
-      [name]: value,
+      [name]: formattedValue,
     });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const validateService = AddKavaniServiceRequestSchema.parse(service);
+      const validateService = AddKavaniServiceRequestSchema.parse({
+        ...service,
+        servicePrice: service.servicePrice.replace(/,/g, ""), // Remove commas before validation
+      });
+
       const res = await trigger({
         ...validateService,
         kolId: Number(selected?.value) || 0,
@@ -56,11 +74,12 @@ const NewService = () => {
         toast.success("سرویس  با موفقیت ثبت شد");
       }
     } catch (err) {
-      // console.log(err)
       handleError(err);
     }
   };
+
   const disableButton = Object.values(service).some((value) => value === "");
+
   return (
     <div className="max-w-xl mx-auto  scale-90 p-4  border  rounded-lg shadow-sm md:p-6 border-gray-700 bg-gray-800">
       <div className="flex justify-between items-center mb-4">
@@ -97,7 +116,7 @@ const NewService = () => {
           )}
           <TextField
             id="servicePrice"
-            placeholder="قیمت سرویس"
+            placeholder="قیمت سرویس (ریال)"
             onChange={handleChange}
             state={service.servicePrice}
           />

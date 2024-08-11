@@ -41,6 +41,7 @@ const transformStatus = (data: { status: string }[]) => {
 
 const RegisteredAccount = () => {
   const { auth } = useAuth();
+
   console.log({ auth });
   const [page, setPage] = useState(1);
   const [selectedSearch, setSelectedSearch] = useState<SelectedOption | null>(
@@ -93,47 +94,47 @@ const RegisteredAccount = () => {
 
   return (
     <div className="w-full">
-      <div className="flex justify-end flex-col-reverse gap-5 md:gap-0 md:flex-row items-end md:items-center md:justify-between">
-        <form className="md:w-1/2 w-full" onSubmit={handleSearch}>
-          <div className="md:flex justify-start items-center space-x-2 transform md:scale-75 origin-right">
-            <TextField
-              placeholder="نام"
-              state={search.name}
-              onChange={handleChange}
-              name="name"
-              id="name"
-              className="ml-2"
-            />
-            <ListBoxSelect
-              items={[
-                { value: "UNREGISTERED", label: "ثبت نام نشده" },
-                { value: "REGISTERED", label: "ثبت نام شده" },
-              ]}
-              selected={selectedSearch}
-              setSelected={setSelectedSearch}
-              label=""
-              placeholder="وضعیت"
-            />
-            <PrimaryButtons className="rounded-xl" onClick={handleSearch}>
-              {isMutating ? (
-                <div className="p-1">
-                  <LoadingSpinnerButton />
-                </div>
-              ) : (
-                <MagnifyingGlass className="w-8 h-8" />
-              )}
-            </PrimaryButtons>
-          </div>
-        </form>
-        {auth?.roles === "KAVANI" && (
+      {auth?.roles === "KAVANI" && (
+        <div className="flex justify-end flex-col-reverse gap-5 md:gap-0 md:flex-row items-end md:items-center md:justify-between">
+          <form className="md:w-1/2 w-full" onSubmit={handleSearch}>
+            <div className="md:flex justify-start items-center space-x-2 transform md:scale-75 origin-right">
+              <TextField
+                placeholder="نام"
+                state={search.name}
+                onChange={handleChange}
+                name="name"
+                id="name"
+                className="ml-2"
+              />
+              <ListBoxSelect
+                items={[
+                  { value: "UNREGISTERED", label: "ثبت نام نشده" },
+                  { value: "REGISTERED", label: "ثبت نام شده" },
+                ]}
+                selected={selectedSearch}
+                setSelected={setSelectedSearch}
+                label=""
+                placeholder="وضعیت"
+              />
+              <PrimaryButtons className="rounded-xl" onClick={handleSearch}>
+                {isMutating ? (
+                  <div className="p-1">
+                    <LoadingSpinnerButton />
+                  </div>
+                ) : (
+                  <MagnifyingGlass className="w-8 h-8" />
+                )}
+              </PrimaryButtons>
+            </div>
+          </form>
           <PrimaryButtons
             className="rounded-xl"
             onClick={() => router.navigate("new")}
           >
             ثبت جدید
           </PrimaryButtons>
-        )}
-      </div>
+        </div>
+      )}
       <div className="flex flex-col w-full">
         <TableContent
           headers={headers}
