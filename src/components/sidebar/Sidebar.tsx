@@ -74,13 +74,11 @@ function Sidebar({ children }: TChildren) {
 
           {auth?.roles === "KAVANI" ? (
             <p className="text-sm font-medium ml-auto">
-             به پنل کاربری کاوانی خوش آمدید
+              به پنل کاربری کاوانی خوش آمدید
             </p>
           ) : (
             <p className="text-sm font-medium ml-auto">
-              کاربر
-              {auth?.name} {/* TODO: add user name */}
-              به پنل کاربری کاوانی خوش آمدید
+              کاربر {auth?.user} به پنل کاربری کاوانی خوش آمدید
             </p>
           )}
 
