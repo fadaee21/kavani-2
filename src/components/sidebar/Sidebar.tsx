@@ -65,7 +65,7 @@ function Sidebar({ children }: TChildren) {
         open={open}
         sidebarContent={sidebarContent}
       />
-      <div className="w-full min-h-screen mr-0 md:mr-72 bg-[#27282B]">
+      <div className="w-full min-h-screen min-w-0 mr-0 md:mr-72 bg-[#27282B]">
         <header className="flex items-center justify-end w-full h-16 pr-5 text-gray-50 ">
           <Bars3
             className="w-5 h-5 ml-auto cursor-pointer md:hidden"
@@ -74,13 +74,11 @@ function Sidebar({ children }: TChildren) {
 
           {auth?.roles === "KAVANI" ? (
             <p className="text-sm font-medium ml-auto">
-             به پنل کاربری کاوانی خوش آمدید
+              به پنل کاربری کاوانی خوش آمدید
             </p>
           ) : (
             <p className="text-sm font-medium ml-auto">
-              کاربر
-              {auth?.name} {/* TODO: add user name */}
-              به پنل کاربری کاوانی خوش آمدید
+              کاربر {auth?.user} به پنل کاربری کاوانی خوش آمدید
             </p>
           )}
 
@@ -98,7 +96,9 @@ function Sidebar({ children }: TChildren) {
           style={{ minHeight: "calc(100vh - 4rem)" }}
         >
           <main className="container py-10 mx-auto">
-            <div className="px-8 text-gray-50">{children}</div>
+            <div className="mx-8 text-gray-50 overflow-x-hidden">
+              {children}
+            </div>
           </main>
         </div>
       </div>

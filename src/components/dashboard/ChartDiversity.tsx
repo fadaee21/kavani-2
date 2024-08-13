@@ -32,16 +32,15 @@ ChartJS.register(
 
 const ChartDiversity = () => {
   const { data, isLoading, error } = useSWR<ResponseData<IDiversity>>(
-    `/panel/supplier/goods/diversity/0/100`,{
-      
-    }
+    `/panel/supplier/goods/diversity/0/100`,
+    {}
   );
   if (isLoading) {
     return <LoadingSpinnerTable />;
   }
 
   const chartData = {
-    // labels: data?.body.content.map((item) => item.name),
+    labels: data?.body.content.map((item) => item.name),
     datasets: [
       {
         label: "Total Quantity",
@@ -57,13 +56,10 @@ const ChartDiversity = () => {
     responsive: true,
     plugins: {
       legend: {
-        position: "top" as const, // Use one of the allowed values and cast it as const
-        // labels: {
-        //   color: "#F9FAFB", // Tailwind text-gray-50
-        // },
+        display: false, // Hide the legend
       },
       title: {
-        display: true,
+        display: true, // Show the title
         text: "پای مربوطه به تنوع کالا",
         color: "#F9FAFB", // Tailwind text-gray-50
       },

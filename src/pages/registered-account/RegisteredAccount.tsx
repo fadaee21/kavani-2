@@ -110,6 +110,7 @@ const RegisteredAccount = () => {
                 items={[
                   { value: "UNREGISTERED", label: "ثبت نام نشده" },
                   { value: "REGISTERED", label: "ثبت نام شده" },
+                  { value: "", label: "همه موارد" },
                 ]}
                 selected={selectedSearch}
                 setSelected={setSelectedSearch}
