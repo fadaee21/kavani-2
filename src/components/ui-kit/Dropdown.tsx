@@ -8,14 +8,13 @@ type Auth = {
   auth: IAuth | null;
 };
 
-
 const Dropdown = memo(({ auth }: Auth) => {
   // console.count("drop down is running");
   const { setAuth } = useAuth();
-  const handleLogout = () => {
+  const handleLogout = async () => {
     Cookies.remove("refreshToken");
     setAuth(null);
-    router.navigate("/", { replace: true });
+    router.navigate("/", { replace: true, state: { from: null } });
   };
   return (
     <Menu as="div" className="relative z-10 inline-block text-left">
@@ -35,16 +34,14 @@ const Dropdown = memo(({ auth }: Auth) => {
         leaveTo="transform opacity-0 scale-95"
       >
         <Menu.Items className="absolute w-56 mt-2 origin-top-right  divide-gray-800/20 px-2 rounded-md shadow-lg left-5 ring-1 ring-black/5 focus:outline-none  bg-[#27282B]">
-    
           <div className="px-1 py-1">
             <Menu.Item>
               {({ active }) => (
                 <button
                   onClick={handleLogout}
-                  className={`${active
-                      ? " text-slate-50"
-                      : " text-slate-300"
-                    } group flex w-full items-center rounded-md px-2 py-2 text-sm  hover:text-[#FD4718]`}
+                  className={`${
+                    active ? " text-slate-50" : " text-slate-300"
+                  } group flex w-full items-center rounded-md px-2 py-2 text-sm  hover:text-[#FD4718]`}
                 >
                   خروج
                 </button>
