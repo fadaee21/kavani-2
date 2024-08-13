@@ -20,7 +20,7 @@ const TableContent = ({
 }: IProps) => {
   return (
     <div className="inline-block  w-full py-2 align-middle">
-      <div className="overflow-hidden w-full  border-b border-gray-600 shadow sm:rounded-lg bg-[#FFFFFF1A]">
+      <div className="overflow-x-auto w-full  border-b border-gray-600 shadow sm:rounded-lg bg-[#FFFFFF1A]">
         <table className="min-w-full divide-y divide-gray-600">
           <thead className="bg-gray-600">
             <tr>

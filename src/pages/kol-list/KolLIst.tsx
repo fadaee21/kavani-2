@@ -109,6 +109,7 @@ const KolLIst = () => {
 export default KolLIst;
 
 const headers = [
+  { key: "id", label: "کد سرویس دهنده" },
   { key: "name", label: "نام" },
   { key: "officialName", label: "نام رسمی" },
   { key: "address", label: "آدرس" },

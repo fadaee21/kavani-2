@@ -110,6 +110,7 @@ const RegisteredAccount = () => {
                 items={[
                   { value: "UNREGISTERED", label: "ثبت نام نشده" },
                   { value: "REGISTERED", label: "ثبت نام شده" },
+                  { value: "", label: "همه موارد" },
                 ]}
                 selected={selectedSearch}
                 setSelected={setSelectedSearch}
@@ -135,7 +136,7 @@ const RegisteredAccount = () => {
           </PrimaryButtons>
         </div>
       )}
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col">
         <TableContent
           headers={headers}
           data={transformedData}
