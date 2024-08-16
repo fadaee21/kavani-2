@@ -13,7 +13,7 @@ import { TextField } from "@/components/ui-kit/TextField";
 import ListBoxSelect from "@/components/ui-kit/ListBoxSelect";
 import { useAuth } from "@/hooks/context/useAuth";
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 10;
 const fetcherPost = (
   url: string,
   { arg }: { arg: { name: string | undefined; status: string | undefined } }
@@ -41,9 +41,8 @@ const transformStatus = (data: { status: string }[]) => {
 
 const RegisteredAccount = () => {
   const { auth } = useAuth();
-
-  console.log({ auth });
   const [page, setPage] = useState(1);
+  const [searchingMode, setSearchingMode] = useState(false);
   const [selectedSearch, setSelectedSearch] = useState<SelectedOption | null>(
     null
   );
@@ -55,10 +54,7 @@ const RegisteredAccount = () => {
     trigger,
     isMutating,
     data: searchData,
-  } = useSWRMutation(
-    `/panel/accounts/search/${page - 1}/${PAGE_SIZE}`,
-    fetcherPost
-  );
+  } = useSWRMutation(`/panel/accounts/search/0/100000`, fetcherPost);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,6 +63,7 @@ const RegisteredAccount = () => {
         name: search.name.length >= 1 ? search.name : undefined,
         status: selectedSearch?.value ? selectedSearch.value : undefined,
       });
+      setSearchingMode(true);
     } catch (err) {
       handleError(err);
     }
@@ -150,12 +147,14 @@ const RegisteredAccount = () => {
           primaryKey="id"
         />
       </div>
-      <Pagination
-        currentPage={page}
-        onPageChange={(value) => setPage(value)}
-        pageSize={PAGE_SIZE}
-        totalCount={totalElements}
-      />
+      {!searchingMode && (
+        <Pagination
+          currentPage={page}
+          onPageChange={(value) => setPage(value)}
+          pageSize={PAGE_SIZE}
+          totalCount={totalElements}
+        />
+      )}
     </div>
   );
 };

@@ -17,6 +17,7 @@ const fetcherPost = (url: string, { arg }: { arg: { name: string } }) =>
 
 const KolLIst = () => {
   const [page, setPage] = useState(1);
+  const [searchingMode, setSearchingMode] = useState(false);
   const [search, setSearch] = useState({
     name: "",
   });
@@ -24,17 +25,17 @@ const KolLIst = () => {
     trigger,
     isMutating,
     data: searchData,
-  } = useSWRMutation(`/kol/search/${page - 1}/${PAGE_SIZE}`, fetcherPost);
+  } = useSWRMutation(`/kol/search/0/10000`, fetcherPost);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await trigger(search);
+      setSearchingMode(true);
     } catch (err) {
       handleError(err);
     }
   };
-
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -54,7 +55,7 @@ const KolLIst = () => {
   return (
     <div className="w-full">
       <div className="flex justify-end flex-col-reverse gap-5 md:gap-0 md:flex-row items-end md:items-center md:justify-between">
-      <form className="md:w-1/2 w-full" onSubmit={handleSearch}>
+        <form className="md:w-1/2 w-full" onSubmit={handleSearch}>
           <div className="md:flex justify-start items-center  space-x-2  transform md:scale-75 origin-right">
             <TextField
               placeholder="نام"
@@ -96,12 +97,14 @@ const KolLIst = () => {
           primaryKey="id"
         />
       </div>
-      <Pagination
-        currentPage={page}
-        onPageChange={(value) => setPage(value)}
-        pageSize={PAGE_SIZE}
-        totalCount={totalElements}
-      />
+      {!searchingMode && (
+        <Pagination
+          currentPage={page}
+          onPageChange={(value) => setPage(value)}
+          pageSize={PAGE_SIZE}
+          totalCount={totalElements}
+        />
+      )}
     </div>
   );
 };
