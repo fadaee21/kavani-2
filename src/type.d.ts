@@ -100,6 +100,20 @@ type User = {
   last_login_at: string;
   voucher: string;
 };
+interface IRegisteredUser {
+  id: number
+  email?: string
+  mobile?: string
+  username?: string
+  voucher?: string
+  serviceName?: string
+  isFinal?: boolean
+  first_name?: string
+  last_name?: string
+  national_code: unknown
+  status: string
+  last_login_at?: string
+}
 
 type Transaction = {
   id: number;

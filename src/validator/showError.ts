@@ -11,8 +11,12 @@ function handleError(error: unknown) {
     toast.error(err?.[0]);
     console.log("Validation Error:", err);
   } else if (axios.isAxiosError(error)) {
+    if (error.code === "ECONNABORTED") {
+      toast.error("درخواست طول کشید. دوباره تلاش کنید.");
+        console.log("Axios Error:", error);
+      return;
+    }
     const errResMsg = error.response?.data.body.message;
-    console.log(errResMsg,"asasasasas")
     toast.error(errResMsg || error.message);
     console.log("Axios Error:", error);
   } else {
