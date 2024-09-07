@@ -5,7 +5,7 @@ import Pagination from "@/components/ui-kit/Pagination";
 import router from "@/routes";
 import axiosPrivate from "@/services/axios";
 import handleError from "@/validator/showError";
-import { useState } from "react";
+import { lazy, useState } from "react";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import MagnifyingGlass from "@/assets/icons/magnifying-glass.svg?react";
@@ -13,19 +13,17 @@ import { TextField } from "@/components/ui-kit/TextField";
 import ListBoxSelect from "@/components/ui-kit/ListBoxSelect";
 import { useAuth } from "@/hooks/context/useAuth";
 
+const ExcelExport = lazy(() => import("@components/ExportToExcel"));
+
 const PAGE_SIZE = 10;
 const fetcherPost = (
   url: string,
   { arg }: { arg: { name: string | undefined; status: string | undefined } }
 ) => axiosPrivate.post(url, arg).then((res) => res.data);
 
-// const transformStatus = (data: { status: string }[]) => {
-//   return data.map((item: { status: string }) => ({
-//     ...item,
-//     status: item.status === "REGISTERED" ? "ثبت نام موفق" : "ثبت نام ناموفق",
-//   }));
-// };
-const transformStatus = (data: { status: string }[]) => {
+const transformStatus: (data: IRegisteredUser[]) => IRegisteredUser[] = (
+  data
+) => {
   const transformedData = new Map<string, string>();
   data.forEach((item) => {
     transformedData.set(
@@ -77,7 +75,7 @@ const RegisteredAccount = () => {
     });
   };
 
-  const { data, isLoading } = useSWR(
+  const { data, isLoading } = useSWR<ResponseData<IRegisteredUser>>(
     `/panel/accounts/get/all/${page - 1}/${PAGE_SIZE}`
   );
 
@@ -85,7 +83,7 @@ const RegisteredAccount = () => {
     ? searchData.body.totalElements
     : data?.body.totalElements || 0;
 
-  const transformedData = searchData
+  const transformedData: IRegisteredUser[] = searchData
     ? transformStatus(searchData.body.content)
     : transformStatus(data?.body?.content || []);
 
@@ -125,12 +123,20 @@ const RegisteredAccount = () => {
               </PrimaryButtons>
             </div>
           </form>
-          <PrimaryButtons
-            className="rounded-xl"
-            onClick={() => router.navigate("new")}
-          >
-            ثبت جدید
-          </PrimaryButtons>
+          <div className="flex gap-3 mr-auto">
+            <ExcelExport
+              fileName={"Registered Accounts Table"}
+              // searchData={null}
+              linkAll={`/panel/accounts/get/all/0/100000`}
+              useIn="reg"
+            />
+            <PrimaryButtons
+              className="rounded-xl"
+              onClick={() => router.navigate("new")}
+            >
+              ثبت جدید
+            </PrimaryButtons>
+          </div>
         </div>
       )}
       <div className="flex flex-col w-full">
@@ -161,7 +167,7 @@ const RegisteredAccount = () => {
 
 export default RegisteredAccount;
 
-const headers = [
+const headers: { key: keyof IRegisteredUser; label: string }[] = [
   { key: "first_name", label: "نام" },
   { key: "last_name", label: "نام خانوادگی" },
   { key: "mobile", label: "موبایل" },

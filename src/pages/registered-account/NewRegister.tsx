@@ -90,31 +90,31 @@ const NewRegister = () => {
             state={personPayment.lastName}
             inputClass="w-full"
           />
+            {data ? (
+              <ListBoxSelect
+                items={data.body.content.map((service) => ({
+                  label: service.name,
+                  value: service.serviceId.toString(),
+                }))}
+                selected={selected}
+                setSelected={setSelected}
+                disabled={false}
+                placeholder="انتخاب نوع فعالیت"
+              />
+            ) : (
+              <ListBoxSelect
+                items={[]}
+                selected={selected}
+                setSelected={setSelected}
+                placeholder={"انتخاب نوع فعالیت"}
+              />
+            )}
           <TextField
             id="mobile"
             placeholder="موبایل"
             onChange={handleChange}
             state={personPayment.mobile}
           />
-          {data ? (
-            <ListBoxSelect
-              items={data.body.content.map((service) => ({
-                label: service.name,
-                value: service.serviceId.toString(),
-              }))}
-              selected={selected}
-              setSelected={setSelected}
-              disabled={false}
-              placeholder="انتخاب نوع فعالیت"
-            />
-          ) : (
-            <ListBoxSelect
-              items={[]}
-              selected={selected}
-              setSelected={setSelected}
-              placeholder={"انتخاب نوع فعالیت"}
-            />
-          )}
         </div>
 
         <PrimaryButtons

@@ -96,7 +96,7 @@ export default function ListBoxSelect({
               />
             </span>
           </ListboxButton>
-          <ListboxOptions className="absolute z-10 max-h-56 w-full overflow-auto rounded-md  bg-gray-700 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+          <ListboxOptions className="absolute z-10 max-h-40 w-full overflow-auto rounded-md  bg-gray-700 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
             {items.map(renderItem)}
           </ListboxOptions>
         </div>

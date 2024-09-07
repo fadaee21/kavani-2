@@ -1,23 +1,27 @@
 import { LoadingSpinnerTable } from "../ui-kit/LoadingSpinner";
 
-interface IProps {
-  headers: { key: string; label: string }[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data?: any[];
+interface IHeader<T> {
+  key: keyof T;
+  label: string;
+}
+
+interface IProps<T> {
+  headers: IHeader<T>[];
+  data?: T[];
   totalElements?: number;
   isLoading?: boolean;
   emptyText: string;
-  primaryKey: string;
+  primaryKey: keyof T;
 }
 
-const TableContent = ({
+const TableContent = <T,>({
   headers,
   data,
   totalElements,
   isLoading,
   emptyText,
   primaryKey,
-}: IProps) => {
+}: IProps<T>) => {
   return (
     <div className="inline-block  w-full py-2 align-middle">
       <div className="overflow-x-auto w-full  border-b border-gray-600 shadow sm:rounded-lg bg-[#FFFFFF1A]">
@@ -26,7 +30,7 @@ const TableContent = ({
             <tr>
               {headers.map((header) => (
                 <th
-                  key={header.key}
+                  key={String(header.key)}
                   scope="col"
                   className="px-6 py-3 text-xs font-medium tracking-wider text-nowrap text-center uppercase text-gray-50"
                 >
@@ -56,7 +60,9 @@ const TableContent = ({
               </tr>
             ) : (
               data.map((item) => (
-                <tr key={item[primaryKey]}>{renderRow(item, headers)}</tr>
+                <tr key={String(item[primaryKey])}>
+                  {renderRow(item, headers)}
+                </tr>
               ))
             )}
           </tbody>
@@ -67,13 +73,18 @@ const TableContent = ({
 };
 
 export default TableContent;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const renderRow = (item: any, headers: { key: string; label: string }[]) => {
+
+const renderRow = <T,>(item: T, headers: IHeader<T>[]) => {
   return (
     <>
-      {Object.values(headers).map(({ key }) => (
-        <td className="px-6 py-4 text-center whitespace-nowrap" key={key}>
-          <div className="text-sm text-gray-50">{item[key] || "-"}</div>
+      {headers.map(({ key }) => (
+        <td
+          className="px-6 py-4 text-center whitespace-nowrap"
+          key={String(key)}
+        >
+          <div className="text-sm text-gray-50">
+            {item[key] ? String(item[key]) : "-"}
+          </div>
         </td>
       ))}
     </>
